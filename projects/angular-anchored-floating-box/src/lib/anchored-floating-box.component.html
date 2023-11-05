@@ -1,0 +1,10 @@
+<div
+    class="lc-anchored-floating-box__backdrop"
+    (pointerup)="_onBackdropPointerUp($event)"></div>
+<div
+    class="lc-anchored-floating-box bottom"
+    [class]="_theme"
+    (animationend)="_onAnimationDone()">
+    <div class="lc-anchored-floating-box__arrow"></div>
+    <div class="lc-anchored-floating-box__content"></div>
+</div>
