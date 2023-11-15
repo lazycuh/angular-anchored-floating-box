@@ -1,11 +1,11 @@
 $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
 
-.lc-anchored-floating-box-container {
+.bbb-anchored-floating-box-container {
     display: flex;
 }
 
-.lc-anchored-floating-box-container,
-.lc-anchored-floating-box__backdrop {
+.bbb-anchored-floating-box-container,
+.bbb-anchored-floating-box__backdrop {
     position: fixed;
     width: 100vw;
     height: 100vh;
@@ -16,11 +16,11 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
     &.enter {
         pointer-events: all;
 
-        .lc-anchored-floating-box.bottom {
+        .bbb-anchored-floating-box.bottom {
             animation-name: show-bottom;
         }
 
-        .lc-anchored-floating-box.top {
+        .bbb-anchored-floating-box.top {
             animation-name: show-top;
         }
     }
@@ -28,21 +28,21 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
     &.leave {
         pointer-events: none;
 
-        .lc-anchored-floating-box.bottom {
+        .bbb-anchored-floating-box.bottom {
             animation-name: hide-bottom;
         }
 
-        .lc-anchored-floating-box.top {
+        .bbb-anchored-floating-box.top {
             animation-name: hide-top;
         }
     }
 }
 
-.lc-anchored-floating-box__backdrop {
+.bbb-anchored-floating-box__backdrop {
     z-index: initial;
 }
 
-.lc-anchored-floating-box {
+.bbb-anchored-floating-box {
     position: absolute;
     border-radius: 5px;
     animation-duration: 0.25s;
@@ -66,7 +66,7 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
     }
 }
 
-.lc-anchored-floating-box__arrow {
+.bbb-anchored-floating-box__arrow {
     overflow: hidden;
     position: absolute;
     width: 20px;
@@ -85,13 +85,13 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
     }
 }
 
-.lc-anchored-floating-box__content {
+.bbb-anchored-floating-box__content {
     padding: 10px;
     font-family: inherit;
     color: var(--anchored-floating-box-text-color);
 }
 
-.lc-anchored-floating-box.top .lc-anchored-floating-box__arrow {
+.bbb-anchored-floating-box.top .bbb-anchored-floating-box__arrow {
     transform: translateX(-50%);
     top: 100%;
     left: 50%;
@@ -102,7 +102,7 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
     }
 }
 
-.lc-anchored-floating-box.bottom .lc-anchored-floating-box__arrow {
+.bbb-anchored-floating-box.bottom .bbb-anchored-floating-box__arrow {
     transform: translateX(-50%);
     top: -20px;
     left: 50%;

@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { AnchoredFloatingBoxComponent } from './anchored-floating-box.component';
 
 describe('AnchoredFloatingBoxComponent', () => {
-  const classPrefix = '.lc-anchored-floating-box';
+  const classPrefix = '.bbb-anchored-floating-box';
   let component: AnchoredFloatingBoxComponent;
   let fixture: ComponentFixture<AnchoredFloatingBoxComponent>;
   let debugElement: DebugElement;

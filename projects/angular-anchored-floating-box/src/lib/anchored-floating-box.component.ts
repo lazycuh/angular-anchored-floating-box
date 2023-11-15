@@ -18,9 +18,9 @@ import { isMobile, viewportVerticalSizeChanges } from './utils';
   // eslint-disable-next-line @angular-eslint/no-host-metadata-property
   host: {
     '[class]':
-      '"lc-anchored-floating-box-container " + (_enter ? "enter" : "leave") + (_className ? " " + _className : "")'
+      '"bbb-anchored-floating-box-container " + (_enter ? "enter" : "leave") + (_className ? " " + _className : "")'
   },
-  selector: 'lc-anchored-floating-box',
+  selector: 'bbb-anchored-floating-box',
   styleUrls: ['./anchored-floating-box.component.scss'],
   templateUrl: './anchored-floating-box.component.html'
 })
@@ -134,10 +134,10 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
    * @param content The body content to show
    */
   open(anchor: Element, content: Element) {
-    this._floatingBox = this._host.nativeElement.querySelector('.lc-anchored-floating-box') as HTMLElement;
+    this._floatingBox = this._host.nativeElement.querySelector('.bbb-anchored-floating-box') as HTMLElement;
     this._enter = true;
     this._anchor = anchor;
-    this._floatingBox.querySelector('.lc-anchored-floating-box__content')?.appendChild(content);
+    this._floatingBox.querySelector('.bbb-anchored-floating-box__content')?.appendChild(content);
     this._showBottom();
   }
 
@@ -193,7 +193,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
 
     if (difference > spacing) {
       (
-        this._floatingBox.querySelector('.lc-anchored-floating-box__arrow') as HTMLElement
+        this._floatingBox.querySelector('.bbb-anchored-floating-box__arrow') as HTMLElement
       ).style.left = `calc(50% + ${difference}px)`;
       return difference;
     }
@@ -209,7 +209,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
       const spacing = 5;
       const newLeft = `calc(50% - ${Math.abs(left) + spacing}px)`;
 
-      (this._floatingBox.querySelector('.lc-anchored-floating-box__arrow') as HTMLElement).style.left = newLeft;
+      (this._floatingBox.querySelector('.bbb-anchored-floating-box__arrow') as HTMLElement).style.left = newLeft;
 
       return left - spacing;
     }

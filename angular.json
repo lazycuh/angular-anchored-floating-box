@@ -11,7 +11,7 @@
       "projectType": "library",
       "root": "projects/angular-anchored-floating-box",
       "sourceRoot": "projects/angular-anchored-floating-box/src",
-      "prefix": "lc",
+      "prefix": "bbb",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",

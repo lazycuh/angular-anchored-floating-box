@@ -8,7 +8,7 @@ import { AnchoredFloatingBoxConfiguration } from './anchored-floating-box-config
 import { Theme } from './theme';
 
 @Component({
-  selector: 'lc-test',
+  selector: 'bbb-test',
   template: `
     <button
       #button
@@ -47,7 +47,7 @@ export class TestComponentRenderer {
 }
 
 describe('AnchoredFloatingBoxService', () => {
-  const classSelectorPrefix = '.lc-anchored-floating-box';
+  const classSelectorPrefix = '.bbb-anchored-floating-box';
   let fixture: ComponentFixture<TestComponentRenderer>;
   let testComponentRenderer: TestComponentRenderer;
 
@@ -79,7 +79,7 @@ describe('AnchoredFloatingBoxService', () => {
 
   it('Should render components as content', () => {
     @Component({
-      selector: 'lc-test-content-component',
+      selector: 'bbb-test-content-component',
       template: '<p>Test content</p>'
     })
     class TestContentComponent {}
