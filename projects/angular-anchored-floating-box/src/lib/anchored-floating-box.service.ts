@@ -41,14 +41,14 @@ export class AnchoredFloatingBoxService {
       environmentInjector: this._applicationRef.injector
     });
     const floatingBoxRef = new AnchoredFloatingBoxRef(floatingBoxComponentRef.instance);
-    const attachedContent = this._attachContent(configuration);
+    const createdContent = this._createContent(configuration);
 
     this._applicationRef.attachView(floatingBoxComponentRef.hostView);
 
     floatingBoxRef.addAfterClosedListener(() => {
       this._applicationRef.detachView(floatingBoxComponentRef.hostView);
       floatingBoxComponentRef.destroy();
-      attachedContent.ref.destroy();
+      createdContent.ref.destroy();
     });
 
     if (configuration.className) {
@@ -58,12 +58,12 @@ export class AnchoredFloatingBoxService {
 
     document.body.appendChild(floatingBoxComponentRef.location.nativeElement);
 
-    floatingBoxComponentRef.instance.open(configuration.anchor, attachedContent.rootNode);
+    floatingBoxComponentRef.instance.open(configuration.anchor, createdContent.rootNode);
 
     return floatingBoxRef;
   }
 
-  private _attachContent(configuration: AnchoredFloatingBoxConfiguration) {
+  private _createContent(configuration: AnchoredFloatingBoxConfiguration) {
     if (configuration.content instanceof TemplateRef) {
       const embeddedView = configuration.content.createEmbeddedView(configuration.context || {});
 

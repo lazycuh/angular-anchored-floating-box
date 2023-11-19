@@ -1,6 +1,23 @@
-# angular-anchored-floating-box
+# angular-anchored-floating-box [![](https://circleci.com/gh/babybeet/angular-anchored-floating-box.svg?style=svg&logo=appveyor)](https://app.circleci.com/pipelines/github/babybeet/angular-anchored-floating-box?branch=main)
 
 A singleton, global Angular service to programmatically render a floating box anchored at an element that can have arbitrary content specified by either a `TemplateRef` or `@Component`.
+
+## Table of contents
+
+<!-- toc -->
+
+- [Installation](#installation)
+- [Available APIs](#available-apis)
+  - [`AnchoredFloatingBoxService`](#anchoredfloatingboxservice)
+  - [`AnchoredFloatingBoxConfiguration`](#anchoredfloatingboxconfiguration)
+  - [`Theme`](#theme)
+  - [`AnchoredFloatingBoxRef`](#anchoredfloatingboxref)
+- [Example Usage](#example-usage)
+  - [Code example](#code-example)
+  - [Result](#result)
+- [Real world example](#real-world-example)
+
+<!-- tocstop -->
 
 ## Installation
 
@@ -21,12 +38,11 @@ A singleton, global Angular service to programmatically render a floating box an
 
 These are the symbols that are available from this package
 
-```typescript
-/**
- * This class allows to show a floating box anchored at an element.
- * See `AnchoredFloatingBoxConfiguration` for the different
- * options to configure the floating box.
- */
+### `AnchoredFloatingBoxService`
+
+This class allows to show a floating box anchored at an element. See `AnchoredFloatingBoxConfiguration` for the different options to configure the floating box.
+
+```ts
 class AnchoredFloatingBoxService {
   /**
    * Set the default theme that will be used for all floating boxes created in the future.
@@ -47,14 +63,11 @@ class AnchoredFloatingBoxService {
 }
 ```
 
-<br/>
+### `AnchoredFloatingBoxConfiguration`
 
-```typescript
-/**
- * The configuration object for the current anchored floating box.
- * The type parameter `C` describes the type of the optional
- * context object passed to `TemplateRef<C>`.
- */
+The configuration object for the current anchored floating box. The type parameter `C` describes the type of the optional context object passed to `TemplateRef<C>`.
+
+```ts
 interface AnchoredFloatingBoxConfiguration<C extends Record<string, unknown> | unknown = unknown> {
   /**
    * The required element that the floating box will be anchored to.
@@ -83,23 +96,20 @@ interface AnchoredFloatingBoxConfiguration<C extends Record<string, unknown> | u
 }
 ```
 
-<br/>
+### `Theme`
 
-```typescript
+```ts
 const enum Theme {
   LIGHT = 'light',
   DARK = 'dark'
 }
 ```
 
-<br/>
+### `AnchoredFloatingBoxRef`
 
-```typescript
-/**
- * A reference to the opened anchored floating box that can be used to
- * close it, or to add the listeners to be invoked depending on
- * whether the floating box is opened or closed.
- */
+A reference to the opened anchored floating box that can be used to close it, or to add the listeners to be invoked depending on whether the floating box is opened or closed.
+
+```ts
 class AnchoredFloatingBoxRef {
   /**
    * Close this anchored floating box only.
@@ -178,7 +188,7 @@ It will also reposition itself if it overflows the top or bottom edge of the vie
 
 <br/>
 
-# Real world example
+## Real world example
 
 Below is a screenshot of a personal app of mine at [https://memecomposer.com](https://memecomposer.com) that uses this component. Clicking on the brush icon button popped open an anchored floating box, then clicking "Text appearance" button inside of it opened another anchored floating box that is independent of the previous one and any others.
 

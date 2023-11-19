@@ -1,6 +1,6 @@
 import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { assertThat, delayBy, getElementBySelector } from '@babybeet/angular-testing-kit';
+import { assertThat, delayBy, fireEvent, getElementBySelector } from '@babybeet/angular-testing-kit';
 
 import { AnchoredFloatingBoxService } from './anchored-floating-box.service';
 import { AnchoredFloatingBoxConfiguration } from './anchored-floating-box-configuration';
@@ -150,6 +150,31 @@ describe('AnchoredFloatingBoxService', () => {
 
     assertThat(`${classSelectorPrefix}.dark`).doesNotExist();
     assertThat(`${classSelectorPrefix}.light`).exists();
+  });
+
+  it('Should be able to configure a different default theme', async () => {
+    testBedComponent.openAnchoredFloatingBox();
+
+    fixture.detectChanges();
+
+    assertThat(`${classSelectorPrefix}.dark`).doesNotExist();
+    assertThat(`${classSelectorPrefix}.light`).exists();
+
+    fireEvent(`${classSelectorPrefix}__backdrop`, 'pointerup');
+
+    await delayBy(1000);
+
+    AnchoredFloatingBoxService.setDefaultTheme(Theme.DARK);
+
+    testBedComponent.openAnchoredFloatingBox();
+
+    fixture.detectChanges();
+
+    assertThat(`${classSelectorPrefix}.light`).doesNotExist();
+    assertThat(`${classSelectorPrefix}.dark`).exists();
+
+    // Set back to the expected default
+    AnchoredFloatingBoxService.setDefaultTheme(Theme.LIGHT);
   });
 
   it('Should render with the provided theme', () => {
