@@ -4,7 +4,6 @@ import { assertThat, delayBy, fireEvent, getElementBySelector } from '@babybeet/
 
 import { AnchoredFloatingBoxService } from './anchored-floating-box.service';
 import { AnchoredFloatingBoxConfiguration } from './anchored-floating-box-configuration';
-import { Theme } from './theme';
 
 @Component({
   selector: 'bbb-test',
@@ -164,7 +163,7 @@ describe('AnchoredFloatingBoxService', () => {
 
     await delayBy(1000);
 
-    AnchoredFloatingBoxService.setDefaultTheme(Theme.DARK);
+    AnchoredFloatingBoxService.setDefaultTheme('dark');
 
     testBedComponent.openAnchoredFloatingBox();
 
@@ -174,11 +173,11 @@ describe('AnchoredFloatingBoxService', () => {
     assertThat(`${classSelectorPrefix}.dark`).exists();
 
     // Set back to the expected default
-    AnchoredFloatingBoxService.setDefaultTheme(Theme.LIGHT);
+    AnchoredFloatingBoxService.setDefaultTheme('light');
   });
 
   it('Should render with the provided theme', () => {
-    testBedComponent.openAnchoredFloatingBox({ theme: Theme.DARK });
+    testBedComponent.openAnchoredFloatingBox({ theme: 'dark' });
 
     fixture.detectChanges();
 

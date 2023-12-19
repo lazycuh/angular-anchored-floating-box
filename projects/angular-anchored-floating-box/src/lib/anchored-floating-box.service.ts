@@ -14,7 +14,7 @@ import { Theme } from './theme';
   providedIn: 'root'
 })
 export class AnchoredFloatingBoxService {
-  private static _defaultTheme = Theme.LIGHT;
+  private static _defaultTheme: Theme = 'light';
 
   constructor(private readonly _applicationRef: ApplicationRef) {}
 

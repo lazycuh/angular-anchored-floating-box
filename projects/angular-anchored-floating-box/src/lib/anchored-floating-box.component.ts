@@ -44,7 +44,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
    *
    * @private To be used by template
    */
-  _theme: Theme = Theme.LIGHT;
+  _theme: Theme = 'light';
 
   /**
    * The target at which the floating is placed
