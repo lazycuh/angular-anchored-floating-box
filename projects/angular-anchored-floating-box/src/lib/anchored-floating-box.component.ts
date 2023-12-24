@@ -1,10 +1,13 @@
+import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
   ElementRef,
   Host,
   HostListener,
+  Inject,
   OnDestroy,
   OnInit,
+  PLATFORM_ID,
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -62,10 +65,15 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
 
   constructor(
     @Host() private readonly _host: ElementRef<HTMLElement>,
+    @Inject(PLATFORM_ID) private readonly _platformId: object,
     private readonly _viewContainerRef: ViewContainerRef
   ) {}
 
   ngOnInit() {
+    if (!isPlatformBrowser(this._platformId)) {
+      return;
+    }
+
     if (isMobile()) {
       this._viewportVerticalSizeChangeSubscription = viewportVerticalSizeChanges().subscribe({
         next: event => {

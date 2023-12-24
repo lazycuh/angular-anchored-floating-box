@@ -1,5 +1,5 @@
 import { Component, TemplateRef } from '@angular/core';
-import { AnchoredFloatingBoxService, Theme } from 'projects/angular-anchored-floating-box/src/public-api';
+import { AnchoredFloatingBoxService } from 'projects/angular-anchored-floating-box/src/public-api';
 
 @Component({
   selector: 'bbb-root',
@@ -8,7 +8,7 @@ import { AnchoredFloatingBoxService, Theme } from 'projects/angular-anchored-flo
 })
 export class AppComponent {
   constructor(private readonly _floatingBoxService: AnchoredFloatingBoxService) {
-    AnchoredFloatingBoxService.setDefaultTheme(Theme.LIGHT);
+    AnchoredFloatingBoxService.setDefaultTheme('light');
   }
 
   openFloatingBox(anchor: HTMLButtonElement, templateRef: TemplateRef<unknown>) {
@@ -20,7 +20,7 @@ export class AppComponent {
         $implicit: 'Angular!!!',
         greeting: 'Hello'
       },
-      theme: Theme.DARK
+      theme: 'dark'
     });
   }
 }

@@ -90,7 +90,7 @@ interface AnchoredFloatingBoxConfiguration<C extends Record<string, unknown> | u
   context?: C;
 
   /**
-   * The optional theme for the floating box. Default is `Theme.LIGHT`.
+   * The optional theme for the floating box. Default is `light`.
    */
   theme?: Theme;
 }
@@ -99,10 +99,7 @@ interface AnchoredFloatingBoxConfiguration<C extends Record<string, unknown> | u
 ### `Theme`
 
 ```ts
-const enum Theme {
-  LIGHT = 'light',
-  DARK = 'dark'
-}
+type Theme = 'light' | 'dark';
 ```
 
 ### `AnchoredFloatingBoxRef`
@@ -156,9 +153,9 @@ import { AnchoredFloatingBoxService } from '@babybeet/anchored-floating-box';
 export class TestComponent {
   constructor(private readonly anchoredFloatingBoxService: AnchoredFloatingBoxService) {}
 
-  onOpen(templateRef: TemplateRef<any>, anchor: HTMLButtonElement) {
+  onOpen(content: TemplateRef<any>, anchor: HTMLButtonElement) {
     this.anchoredFloatingBoxService.open({
-      content: templateRef,
+      content,
       anchor,
       className: 'optional-class-name',
       context: {
