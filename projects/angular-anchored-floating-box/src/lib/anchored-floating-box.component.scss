@@ -86,9 +86,13 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
 }
 
 .bbb-anchored-floating-box__content {
-    padding: 10px;
+    padding: 5px;
     font-family: inherit;
     color: var(--anchored-floating-box-text-color);
+    height: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .bbb-anchored-floating-box.top .bbb-anchored-floating-box__arrow {
