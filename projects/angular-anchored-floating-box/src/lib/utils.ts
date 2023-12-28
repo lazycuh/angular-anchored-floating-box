@@ -13,6 +13,7 @@ export interface ResizeEvent {
 
 export function viewportVerticalSizeChanges(): Observable<ResizeEvent> {
   let previousVisibleViewportBoundingBox = document.body.getBoundingClientRect();
+
   return fromEvent(window, 'resize').pipe(
     debounceTime(250),
     map(() => {
@@ -23,6 +24,7 @@ export function viewportVerticalSizeChanges(): Observable<ResizeEvent> {
       );
 
       previousVisibleViewportBoundingBox = currentVisibleViewportBoundingBox;
+
       if (deltaHeight > deltaWidth) {
         return {
           height: currentVisibleViewportBoundingBox.height,
@@ -30,6 +32,7 @@ export function viewportVerticalSizeChanges(): Observable<ResizeEvent> {
           width: currentVisibleViewportBoundingBox.width
         };
       }
+
       return null;
     }),
     filter(event => event !== null)

@@ -79,6 +79,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
         next: event => {
           if (this._floatingBox) {
             const floatingBoxBoundingBox = this._floatingBox.getBoundingClientRect();
+
             /**
              * If this floating box's bottom is larger than the newly resized viewport's height,
              * then we want to shift this floating box up by the difference between its bottom's value
@@ -132,6 +133,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
     if (!Array.isArray(this._afterOpenedListeners)) {
       this._afterOpenedListeners = [];
     }
+
     this._afterOpenedListeners.push(listener);
   }
 
@@ -217,8 +219,10 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
       (
         this._floatingBox.querySelector('.bbb-anchored-floating-box__arrow') as HTMLElement
       ).style.left = `calc(50% + ${difference}px)`;
+
       return difference;
     }
+
     return 0;
   }
 
@@ -235,6 +239,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
 
       return left - spacing;
     }
+
     return 0;
   }
 

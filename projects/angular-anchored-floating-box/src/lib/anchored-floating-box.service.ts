@@ -54,6 +54,7 @@ export class AnchoredFloatingBoxService {
     if (configuration.className) {
       floatingBoxComponentRef.instance.addClassName(configuration.className);
     }
+
     floatingBoxComponentRef.instance.setTheme(configuration.theme || AnchoredFloatingBoxService._defaultTheme);
 
     document.body.appendChild(floatingBoxComponentRef.location.nativeElement);
@@ -78,6 +79,7 @@ export class AnchoredFloatingBoxService {
          */
         rootNode: embeddedView.rootNodes.reduce((fragment, next) => {
           fragment.appendChild(next);
+
           return fragment;
         }, document.createDocumentFragment())
       };
