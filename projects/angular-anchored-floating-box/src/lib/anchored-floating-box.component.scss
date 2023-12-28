@@ -93,6 +93,9 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
     box-sizing: border-box;
     overflow-x: hidden;
     overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-flow: column;
 }
 
 .bbb-anchored-floating-box.top .bbb-anchored-floating-box__arrow {
