@@ -1,7 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { assertThat } from '@babybeet/angular-testing-kit';
+import { assertThat, delayBy } from '@babybeet/angular-testing-kit';
 
 import { AnchoredFloatingBoxComponent } from './anchored-floating-box.component';
 
@@ -56,14 +56,21 @@ describe('AnchoredFloatingBoxComponent', () => {
     assertThat(debugElement.query(By.css('.top'))).exists();
   }));
 
-  it('Should close floating box when its backdrop triggers pointerup event', () => {
+  it('Should close floating box when its backdrop triggers pointerup event', async () => {
     component.open(document.createElement('button'), document.createElement('span'));
+
     fixture.detectChanges();
+
+    await delayBy(1000);
+
     expect(debugElement.classes['enter']).toBeTrue();
+
     debugElement
       .query(By.css(`${classPrefix}__backdrop`))
       .triggerEventHandler('pointerup', { stopPropagation: jasmine.createSpy() });
+
     fixture.detectChanges();
+
     expect(debugElement.classes['leave']).toBeTrue();
   });
 

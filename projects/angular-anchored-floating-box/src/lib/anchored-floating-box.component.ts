@@ -8,7 +8,6 @@ import {
   OnDestroy,
   OnInit,
   PLATFORM_ID,
-  ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -20,8 +19,7 @@ import { isMobile, viewportVerticalSizeChanges } from './utils';
   encapsulation: ViewEncapsulation.None,
   // eslint-disable-next-line @angular-eslint/no-host-metadata-property
   host: {
-    '[class]':
-      '"bbb-anchored-floating-box-container " + (_enter ? "enter" : "leave") + (_className ? " " + _className : "")'
+    '[class]': '"bbb-anchored-floating-box-container " + (_className ? " " + _className : "")'
   },
   selector: 'bbb-anchored-floating-box',
   styleUrls: ['./anchored-floating-box.component.scss'],
@@ -36,13 +34,6 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
   _className?: string;
 
   /**
-   * Are we entering into viewport or leaving?
-   *
-   * @private To be used by template
-   */
-  _enter = false;
-
-  /**
    * The current theme for this floating box
    *
    * @private To be used by template
@@ -55,6 +46,11 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
   private _anchor!: Element;
 
   /**
+   * Are we entering into viewport or leaving?
+   */
+  private _enter = false;
+
+  /**
    * The DOM element for this floating box
    */
   private _floatingBox!: HTMLElement;
@@ -65,8 +61,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
 
   constructor(
     @Host() private readonly _host: ElementRef<HTMLElement>,
-    @Inject(PLATFORM_ID) private readonly _platformId: object,
-    private readonly _viewContainerRef: ViewContainerRef
+    @Inject(PLATFORM_ID) private readonly _platformId: object
   ) {}
 
   ngOnInit() {
@@ -119,6 +114,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
    */
   close() {
     this._enter = false;
+    this._host.nativeElement.classList.add('leave');
   }
 
   addAfterClosedListener(listener: () => void) {
@@ -145,7 +141,6 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
    */
   open(anchor: Element, content: Element) {
     this._floatingBox = this._host.nativeElement.querySelector('.bbb-anchored-floating-box') as HTMLElement;
-    this._enter = true;
     this._anchor = anchor;
     this._floatingBox.querySelector('.bbb-anchored-floating-box__content')?.appendChild(content);
     this._showBottom();
@@ -202,8 +197,13 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
       const horizontalDifference =
         this._calculateRightEdgeOverflowingDistance(floatingBoxLeft, floatingBoxBoundingBox.width) ||
         this._calculateLeftEdgeOverflowingDistance(floatingBoxLeft);
+
       this._floatingBox.style.left = `${floatingBoxLeft - horizontalDifference}px`;
       this._floatingBox.style.top = `${floatingBoxTop}px`;
+      this._floatingBox.style.visibility = 'visible';
+
+      this._enter = true;
+      this._host.nativeElement.classList.add('enter');
     }, 0);
   }
 
@@ -254,7 +254,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
    * @private To be used by template
    */
   _onBackdropPointerUp(event: PointerEvent) {
-    this._enter = false;
+    this.close();
     event.stopPropagation();
   }
 
@@ -263,7 +263,6 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
    */
   _onAnimationDone() {
     if (!this._enter) {
-      this._viewContainerRef.clear();
       this._afterClosedListeners?.forEach(listener => listener());
     } else {
       this._afterOpenedListeners?.forEach(listener => listener());

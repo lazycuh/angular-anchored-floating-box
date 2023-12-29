@@ -11,6 +11,9 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
     height: 100vh;
     left: 0;
     top: 0;
+}
+
+.bbb-anchored-floating-box-container {
     z-index: 500;
 
     &.enter {
@@ -38,10 +41,6 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
     }
 }
 
-.bbb-anchored-floating-box__backdrop {
-    z-index: initial;
-}
-
 .bbb-anchored-floating-box {
     position: absolute;
     border-radius: 5px;
@@ -52,6 +51,7 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
     max-width: 98vw;
     background-color: var(--anchored-floating-box-bg-color);
     box-shadow: var(--anchored-floating-box-shadow);
+    visibility: hidden;
 
     &.dark {
         --anchored-floating-box-bg-color: #494949;

@@ -65,10 +65,12 @@ describe('AnchoredFloatingBoxService', () => {
     fixture.destroy();
   });
 
-  it('Should open a floating box whose content\'s innerHTML is "<span>Hello World</span>"', () => {
+  it('Should open a floating box whose content\'s innerHTML is "<span>Hello World</span>"', async () => {
     testBedComponent.openAnchoredFloatingBox();
 
     fixture.detectChanges();
+
+    await delayBy(500);
 
     assertThat(`${classSelectorPrefix}-container.enter`).exists();
     assertThat(`${classSelectorPrefix}__content`).hasInnerHtml('<span>Hello World</span>');
@@ -111,6 +113,8 @@ describe('AnchoredFloatingBoxService', () => {
 
     fixture.detectChanges();
 
+    await delayBy(500);
+
     ref.close();
 
     fixture.detectChanges();
@@ -124,6 +128,8 @@ describe('AnchoredFloatingBoxService', () => {
     const ref = testBedComponent.openAnchoredFloatingBox();
 
     fixture.detectChanges();
+
+    await delayBy(500);
 
     ref.close();
 
@@ -159,15 +165,17 @@ describe('AnchoredFloatingBoxService', () => {
     assertThat(`${classSelectorPrefix}.dark`).doesNotExist();
     assertThat(`${classSelectorPrefix}.light`).exists();
 
-    fireEvent(`${classSelectorPrefix}__backdrop`, 'pointerup');
+    await delayBy(500);
 
-    await delayBy(1000);
+    fireEvent(`${classSelectorPrefix}__backdrop`, 'pointerup');
 
     AnchoredFloatingBoxService.setDefaultTheme('dark');
 
     testBedComponent.openAnchoredFloatingBox();
 
     fixture.detectChanges();
+
+    await delayBy(500);
 
     assertThat(`${classSelectorPrefix}.light`).doesNotExist();
     assertThat(`${classSelectorPrefix}.dark`).exists();
