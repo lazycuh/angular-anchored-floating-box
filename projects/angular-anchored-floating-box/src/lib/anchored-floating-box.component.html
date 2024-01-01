@@ -1,6 +1,8 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <div
     class="bbb-anchored-floating-box__backdrop"
-    (pointerup)="_onBackdropPointerUp($event)"></div>
+    (click)="_onBackdropClick($event)"></div>
 <div
     class="bbb-anchored-floating-box bottom"
     [class]="_theme"

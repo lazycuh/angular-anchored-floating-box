@@ -244,24 +244,21 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:keyup', ['$event'])
-  _onCloseWhenEscapeKeyIsPressed(event: KeyboardEvent) {
+  protected _onCloseWhenEscapeKeyIsPressed(event: KeyboardEvent) {
     if (event.key === 'Escape') {
       this.close();
     }
   }
 
-  /**
-   * @private To be used by template
-   */
-  _onBackdropPointerUp(event: PointerEvent) {
-    this.close();
+  protected _onBackdropClick(event: Event) {
     event.stopPropagation();
+    this.close();
   }
 
   /**
    * @private To be used by template
    */
-  _onAnimationDone() {
+  protected _onAnimationDone() {
     if (!this._enter) {
       this._afterClosedListeners?.forEach(listener => listener());
     } else {

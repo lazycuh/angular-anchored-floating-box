@@ -167,7 +167,7 @@ describe('AnchoredFloatingBoxService', () => {
 
     await delayBy(500);
 
-    fireEvent(`${classSelectorPrefix}__backdrop`, 'pointerup');
+    fireEvent(`${classSelectorPrefix}__backdrop`, 'click');
 
     AnchoredFloatingBoxService.setDefaultTheme('dark');
 

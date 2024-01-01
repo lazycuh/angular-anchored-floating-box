@@ -56,7 +56,7 @@ describe('AnchoredFloatingBoxComponent', () => {
     assertThat(debugElement.query(By.css('.top'))).exists();
   }));
 
-  it('Should close floating box when its backdrop triggers pointerup event', async () => {
+  it('Should close floating box when its backdrop is clicked', async () => {
     component.open(document.createElement('button'), document.createElement('span'));
 
     fixture.detectChanges();
@@ -67,7 +67,7 @@ describe('AnchoredFloatingBoxComponent', () => {
 
     debugElement
       .query(By.css(`${classPrefix}__backdrop`))
-      .triggerEventHandler('pointerup', { stopPropagation: jasmine.createSpy() });
+      .triggerEventHandler('click', { stopPropagation: jasmine.createSpy() });
 
     fixture.detectChanges();
 
