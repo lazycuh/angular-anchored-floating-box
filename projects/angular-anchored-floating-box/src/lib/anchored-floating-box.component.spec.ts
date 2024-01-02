@@ -81,4 +81,27 @@ describe('AnchoredFloatingBoxComponent', () => {
 
     assertThat(debugElement.query(By.css('.light'))).exists();
   });
+
+  it('Should stop click events from bubbling to window', async () => {
+    const clickHandlerSpy = jasmine.createSpy();
+
+    window.addEventListener('click', clickHandlerSpy, false);
+
+    component.open(document.createElement('button'), document.createElement('span'));
+
+    fixture.detectChanges();
+
+    await delayBy(1000);
+
+    expect(debugElement.classes['enter']).toBeTrue();
+
+    debugElement.query(By.css(`${classPrefix}__backdrop`)).triggerEventHandler('click');
+
+    fixture.detectChanges();
+
+    expect(debugElement.classes['leave']).toBeTrue();
+    expect(clickHandlerSpy).not.toHaveBeenCalled();
+
+    window.removeEventListener('click', clickHandlerSpy, false);
+  });
 });

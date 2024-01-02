@@ -101,6 +101,11 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
     this._afterOpenedListeners = undefined;
   }
 
+  @HostListener('click', ['$event'])
+  protected _onPreventClickEventFromBubbling(event: Event) {
+    event.stopPropagation();
+  }
+
   addClassName(className: string) {
     this._className = className;
   }
@@ -216,9 +221,8 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
     const difference = left + width - window.innerWidth + spacing;
 
     if (difference > spacing) {
-      (
-        this._floatingBox.querySelector('.bbb-anchored-floating-box__arrow') as HTMLElement
-      ).style.left = `calc(50% + ${difference}px)`;
+      (this._floatingBox.querySelector('.bbb-anchored-floating-box__arrow') as HTMLElement).style.left =
+        `calc(50% + ${difference}px)`;
 
       return difference;
     }
@@ -250,8 +254,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected _onBackdropClick(event: Event) {
-    event.stopPropagation();
+  protected _onBackdropClick() {
     this.close();
   }
 
