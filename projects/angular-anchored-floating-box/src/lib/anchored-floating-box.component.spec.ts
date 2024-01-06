@@ -37,7 +37,7 @@ describe('AnchoredFloatingBoxComponent', () => {
   it('Should be placed at the bottom of anchor element', fakeAsync(() => {
     component.open(document.createElement('button'), document.createElement('div'));
     fixture.detectChanges();
-    tick();
+    tick(20);
 
     assertThat(debugElement.query(By.css('.top'))).doesNotExist();
     assertThat(debugElement.query(By.css('.bottom'))).exists();
@@ -46,11 +46,14 @@ describe('AnchoredFloatingBoxComponent', () => {
   it('Should be placed at the top of the anchor if it overflows the bottom edge of the viewport', fakeAsync(() => {
     const anchor = document.createElement('button');
 
-    anchor.setAttribute('style', ['position:fixed', 'bottom:0'].join(';'));
-    component.open(anchor, document.createElement('span'));
-    fixture.detectChanges();
+    anchor.setAttribute('style', 'position:fixed; bottom:0');
     document.body.appendChild(anchor);
-    tick();
+
+    component.open(anchor, document.createElement('span'));
+
+    fixture.detectChanges();
+
+    tick(500);
 
     assertThat(debugElement.query(By.css('.bottom'))).doesNotExist();
     assertThat(debugElement.query(By.css('.top'))).exists();
