@@ -152,65 +152,65 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
   }
 
   private _showBottom() {
-    const floatingBoxBoundingBox = this._floatingBox.getBoundingClientRect();
-    const anchorBoundingBox = this._anchor.getBoundingClientRect();
-    const arrowHeight = 15;
-    const spaceBetweenArrowAndAnchor = 10;
-    // The floating box will be placed centered horizontally with the anchor.
-    const floatingBoxLeft = anchorBoundingBox.left + (anchorBoundingBox.width - floatingBoxBoundingBox.width) / 2;
-    let floatingBoxTop = anchorBoundingBox.bottom + spaceBetweenArrowAndAnchor;
-    const isOverflowingBottomEdgeOfViewport =
-      floatingBoxTop + arrowHeight + floatingBoxBoundingBox.height + spaceBetweenArrowAndAnchor >= window.innerHeight;
-
-    /**
-     * If the floating box overflows the bottom of the viewport, we want to shift the floating box
-     * to the top of the anchor, but if this shifting causes the floating box to overflow
-     * the top of the viewport which is when `floatingBoxTop` is negative, then we want
-     * to limit the height of the floating box to the distance between the anchor's top
-     * position minus some spacing.
-     */
-    if (isOverflowingBottomEdgeOfViewport) {
-      floatingBoxTop = anchorBoundingBox.top - floatingBoxBoundingBox.height - spaceBetweenArrowAndAnchor;
-
-      if (floatingBoxTop < 0) {
-        const newFloatingBoxHeight = anchorBoundingBox.top - spaceBetweenArrowAndAnchor * 1.5;
-
-        this._floatingBox.style.height = `${newFloatingBoxHeight}px`;
-        floatingBoxTop = spaceBetweenArrowAndAnchor / 2;
-      }
-
-      this._floatingBox.classList.remove('bottom');
-      this._floatingBox.classList.add('top');
-    } else {
-      /**
-       * If the floating box overflows the bottom edge of viewport, we want to shrink
-       * its height by the amount of overflowing distance and some spacing.
-       */
-      const effectiveFloatingBoxBottom = floatingBoxTop + floatingBoxBoundingBox.height;
-      const differenceBetweenFloatingBoxBottomAndViewportBottom = effectiveFloatingBoxBottom - window.innerHeight;
-
-      if (differenceBetweenFloatingBoxBottomAndViewportBottom > 0) {
-        const newFloatingBoxHeight =
-          floatingBoxBoundingBox.height -
-          differenceBetweenFloatingBoxBottomAndViewportBottom -
-          spaceBetweenArrowAndAnchor / 2;
-        this._floatingBox.style.height = `${newFloatingBoxHeight}px`;
-      }
-    }
-
-    const horizontalDifference =
-      this._calculateRightEdgeOverflowingDistance(floatingBoxLeft, floatingBoxBoundingBox.width) ||
-      this._calculateLeftEdgeOverflowingDistance(floatingBoxLeft);
-
-    this._floatingBox.style.left = `${floatingBoxLeft - horizontalDifference}px`;
-    this._floatingBox.style.top = `${floatingBoxTop}px`;
-
     setTimeout(() => {
-      this._floatingBox.style.visibility = 'visible';
+      const floatingBoxBoundingBox = this._floatingBox.getBoundingClientRect();
+      const anchorBoundingBox = this._anchor.getBoundingClientRect();
+      const arrowHeight = 15;
+      const spaceBetweenArrowAndAnchor = 10;
+      // The floating box will be placed centered horizontally with the anchor.
+      const floatingBoxLeft = anchorBoundingBox.left + (anchorBoundingBox.width - floatingBoxBoundingBox.width) / 2;
+      let floatingBoxTop = anchorBoundingBox.bottom + spaceBetweenArrowAndAnchor;
+      const isOverflowingBottomEdgeOfViewport =
+        floatingBoxTop + arrowHeight + floatingBoxBoundingBox.height + spaceBetweenArrowAndAnchor >= window.innerHeight;
+
+      /**
+       * If the floating box overflows the bottom of the viewport, we want to shift the floating box
+       * to the top of the anchor, but if this shifting causes the floating box to overflow
+       * the top of the viewport which is when `floatingBoxTop` is negative, then we want
+       * to limit the height of the floating box to the distance between the anchor's top
+       * position minus some spacing.
+       */
+      if (isOverflowingBottomEdgeOfViewport) {
+        floatingBoxTop = anchorBoundingBox.top - floatingBoxBoundingBox.height - spaceBetweenArrowAndAnchor;
+
+        if (floatingBoxTop < 0) {
+          const newFloatingBoxHeight = anchorBoundingBox.top - spaceBetweenArrowAndAnchor * 1.5;
+
+          this._floatingBox.style.height = `${newFloatingBoxHeight}px`;
+          floatingBoxTop = spaceBetweenArrowAndAnchor / 2;
+        }
+
+        this._floatingBox.classList.remove('bottom');
+        this._floatingBox.classList.add('top');
+      } else {
+        /**
+         * If the floating box overflows the bottom edge of viewport, we want to shrink
+         * its height by the amount of overflowing distance and some spacing.
+         */
+        const effectiveFloatingBoxBottom = floatingBoxTop + floatingBoxBoundingBox.height;
+        const differenceBetweenFloatingBoxBottomAndViewportBottom = effectiveFloatingBoxBottom - window.innerHeight;
+
+        if (differenceBetweenFloatingBoxBottomAndViewportBottom > 0) {
+          const newFloatingBoxHeight =
+            floatingBoxBoundingBox.height -
+            differenceBetweenFloatingBoxBottomAndViewportBottom -
+            spaceBetweenArrowAndAnchor / 2;
+          this._floatingBox.style.height = `${newFloatingBoxHeight}px`;
+        }
+      }
+
+      const horizontalDifference =
+        this._calculateRightEdgeOverflowingDistance(floatingBoxLeft, floatingBoxBoundingBox.width) ||
+        this._calculateLeftEdgeOverflowingDistance(floatingBoxLeft);
+
+      this._floatingBox.style.left = `${floatingBoxLeft - horizontalDifference}px`;
+      this._floatingBox.style.top = `${floatingBoxTop}px`;
+
+      this._floatingBox.classList.add('visible');
 
       this._enter = true;
       this._host.nativeElement.classList.add('enter');
-    }, 16); // Waiting after 1 frame (60fps = 16ms/frame)
+    });
   }
 
   /**

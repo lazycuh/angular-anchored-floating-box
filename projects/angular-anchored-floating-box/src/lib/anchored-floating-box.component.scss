@@ -51,7 +51,11 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
     max-width: 98vw;
     background-color: var(--anchored-floating-box-bg-color);
     box-shadow: var(--anchored-floating-box-shadow);
-    visibility: hidden;
+    opacity: 0;
+
+    &.visible {
+        opacity: 1;
+    }
 
     &.dark {
         --anchored-floating-box-bg-color: #494949;
