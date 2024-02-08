@@ -1,6 +1,6 @@
 {
   "name": "@babybeet/angular-anchored-floating-box",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
