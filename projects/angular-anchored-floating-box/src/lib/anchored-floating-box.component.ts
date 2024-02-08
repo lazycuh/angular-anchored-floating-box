@@ -255,6 +255,11 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener('window:resize')
+  protected _onWindowResize() {
+    setTimeout(() => this._showBottom(), 250);
+  }
+
   protected _onBackdropClick() {
     this.close();
   }
