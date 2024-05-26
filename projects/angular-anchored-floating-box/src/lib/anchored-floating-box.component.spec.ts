@@ -1,23 +1,22 @@
-import { DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { DebugElement, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { assertThat, delayBy } from '@babybeet/angular-testing-kit';
 
 import { AnchoredFloatingBoxComponent } from './anchored-floating-box.component';
 
 describe('AnchoredFloatingBoxComponent', () => {
-  const classPrefix = '.bbb-anchored-floating-box';
+  const classPrefix = '.lc-anchored-floating-box';
   let component: AnchoredFloatingBoxComponent;
   let fixture: ComponentFixture<AnchoredFloatingBoxComponent>;
   let debugElement: DebugElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [AnchoredFloatingBoxComponent]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [AnchoredFloatingBoxComponent],
+      providers: [provideExperimentalZonelessChangeDetection()]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(AnchoredFloatingBoxComponent);
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
@@ -34,16 +33,17 @@ describe('AnchoredFloatingBoxComponent', () => {
     assertThat(`${classPrefix}__content`).hasInnerHtml('<span>Hello World</span>');
   });
 
-  it('Should be placed at the bottom of anchor element', fakeAsync(() => {
+  it('Should be placed at the bottom of anchor element', async () => {
     component.open(document.createElement('button'), document.createElement('div'));
     fixture.detectChanges();
-    tick(20);
+
+    await delayBy(20);
 
     assertThat(debugElement.query(By.css('.top'))).doesNotExist();
     assertThat(debugElement.query(By.css('.bottom'))).exists();
-  }));
+  });
 
-  it('Should be placed at the top of the anchor if it overflows the bottom edge of the viewport', fakeAsync(() => {
+  it('Should be placed at the top of the anchor if it overflows the bottom edge of the viewport', async () => {
     const anchor = document.createElement('button');
 
     anchor.setAttribute('style', 'position:fixed; bottom:0');
@@ -53,11 +53,11 @@ describe('AnchoredFloatingBoxComponent', () => {
 
     fixture.detectChanges();
 
-    tick(500);
+    await delayBy(500);
 
     assertThat(debugElement.query(By.css('.bottom'))).doesNotExist();
     assertThat(debugElement.query(By.css('.top'))).exists();
-  }));
+  });
 
   it('Should close floating box when its backdrop is clicked', async () => {
     component.open(document.createElement('button'), document.createElement('span'));

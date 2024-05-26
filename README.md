@@ -6,6 +6,7 @@ A singleton, global Angular service to programmatically render a floating box an
 
 <!-- toc -->
 
+- [Angular version compatibility](#angular-version-compatibility)
 - [Installation](#installation)
 - [Available APIs](#available-apis)
   - [`AnchoredFloatingBoxService`](#anchoredfloatingboxservice)
@@ -18,6 +19,10 @@ A singleton, global Angular service to programmatically render a floating box an
 - [Real world example](#real-world-example)
 
 <!-- tocstop -->
+
+## Angular version compatibility
+
+- 16+
 
 ## Installation
 

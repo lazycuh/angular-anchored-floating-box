@@ -11,7 +11,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "bbb",
+            "prefix": "lc",
             "style": "camelCase"
           }
         ],
@@ -19,7 +19,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "bbb",
+            "prefix": "lc",
             "style": "kebab-case"
           }
         ],

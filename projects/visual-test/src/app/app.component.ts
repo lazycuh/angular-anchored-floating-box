@@ -2,8 +2,10 @@ import { Component, TemplateRef } from '@angular/core';
 import { AnchoredFloatingBoxService } from 'projects/angular-anchored-floating-box/src/public-api';
 
 @Component({
-  selector: 'bbb-root',
-  styleUrls: ['./app.component.scss'],
+  imports: [],
+  selector: 'lc-root',
+  standalone: true,
+  styleUrl: './app.component.scss',
   templateUrl: './app.component.html'
 })
 export class AppComponent {

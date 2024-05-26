@@ -1,12 +1,18 @@
-import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {
+  Component,
+  ElementRef,
+  provideExperimentalZonelessChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { assertThat, delayBy, fireEvent, getElementBySelector } from '@babybeet/angular-testing-kit';
 
 import { AnchoredFloatingBoxService } from './anchored-floating-box.service';
 import { AnchoredFloatingBoxConfiguration } from './anchored-floating-box-configuration';
 
 @Component({
-  selector: 'bbb-test',
+  selector: 'lc-test',
   template: `
     <button
       #button
@@ -44,18 +50,16 @@ class TestBedComponent {
 }
 
 describe('AnchoredFloatingBoxService', () => {
-  const classSelectorPrefix = '.bbb-anchored-floating-box';
+  const classSelectorPrefix = '.lc-anchored-floating-box';
   let fixture: ComponentFixture<TestBedComponent>;
   let testBedComponent: TestBedComponent;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [TestBedComponent],
-      providers: [AnchoredFloatingBoxService]
+      providers: [AnchoredFloatingBoxService, provideExperimentalZonelessChangeDetection()]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(TestBedComponent);
     testBedComponent = fixture.componentInstance;
     fixture.detectChanges();
@@ -78,7 +82,7 @@ describe('AnchoredFloatingBoxService', () => {
 
   it('Should render components as content', () => {
     @Component({
-      selector: 'bbb-test-content-component',
+      selector: 'lc-test-content-component',
       template: '<p>Test content</p>'
     })
     class TestContentComponent {}

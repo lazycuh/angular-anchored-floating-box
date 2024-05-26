@@ -40,7 +40,7 @@ function bumpPackageVersion {
     extractVersionFromPackageJsonFile
 }
 
-if [ $(matchCommitMessagePattern "fix|refactor|feat|breaking(\s*change)?") != "0" ]; then
+if [ $(matchCommitMessagePattern "feat|fix|build|chore|ci|docs|perf|refactor|style|test|breaking(\s*change)?") != "0" ]; then
     bumpPackageVersion
     NEW_VERSION=$(extractVersionFromPackageJsonFile)
     cd projects/angular-anchored-floating-box
