@@ -23,21 +23,21 @@ describe('AnchoredFloatingBoxComponent', () => {
     fixture.detectChanges();
   });
 
-  it('Should have "<span>Hello World</span>" as the body', () => {
+  it('Should have "<span>Hello World</span>" as the body', async () => {
     const content = document.createElement('span');
 
     content.innerText = 'Hello World';
     component.open(document.createElement('button'), content);
-    fixture.detectChanges();
+
+    await delayBy(16);
 
     assertThat(`${classPrefix}__content`).hasInnerHtml('<span>Hello World</span>');
   });
 
   it('Should be placed at the bottom of anchor element', async () => {
     component.open(document.createElement('button'), document.createElement('div'));
-    fixture.detectChanges();
 
-    await delayBy(20);
+    await delayBy(16);
 
     assertThat(debugElement.query(By.css('.top'))).doesNotExist();
     assertThat(debugElement.query(By.css('.bottom'))).exists();
@@ -51,9 +51,7 @@ describe('AnchoredFloatingBoxComponent', () => {
 
     component.open(anchor, document.createElement('span'));
 
-    fixture.detectChanges();
-
-    await delayBy(500);
+    await delayBy(16);
 
     assertThat(debugElement.query(By.css('.bottom'))).doesNotExist();
     assertThat(debugElement.query(By.css('.top'))).exists();
@@ -62,9 +60,7 @@ describe('AnchoredFloatingBoxComponent', () => {
   it('Should close floating box when its backdrop is clicked', async () => {
     component.open(document.createElement('button'), document.createElement('span'));
 
-    fixture.detectChanges();
-
-    await delayBy(1000);
+    await delayBy(16);
 
     expect(debugElement.classes['enter']).toBeTrue();
 
@@ -72,15 +68,13 @@ describe('AnchoredFloatingBoxComponent', () => {
       .query(By.css(`${classPrefix}__backdrop`))
       .triggerEventHandler('click', { stopPropagation: jasmine.createSpy() });
 
-    fixture.detectChanges();
-
     expect(debugElement.classes['leave']).toBeTrue();
   });
 
-  it('Should use light theme by default', () => {
+  it('Should use light theme by default', async () => {
     component.open(document.createElement('button'), document.createElement('span'));
 
-    fixture.detectChanges();
+    await delayBy(16);
 
     assertThat(debugElement.query(By.css('.light'))).exists();
   });
@@ -92,15 +86,13 @@ describe('AnchoredFloatingBoxComponent', () => {
 
     component.open(document.createElement('button'), document.createElement('span'));
 
-    fixture.detectChanges();
-
-    await delayBy(1000);
+    await delayBy(16);
 
     expect(debugElement.classes['enter']).toBeTrue();
 
     debugElement.query(By.css(`${classPrefix}__backdrop`)).triggerEventHandler('click');
 
-    fixture.detectChanges();
+    await delayBy(16);
 
     expect(debugElement.classes['leave']).toBeTrue();
     expect(clickHandlerSpy).not.toHaveBeenCalled();

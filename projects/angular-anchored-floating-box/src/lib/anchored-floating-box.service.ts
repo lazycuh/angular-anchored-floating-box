@@ -43,8 +43,6 @@ export class AnchoredFloatingBoxService {
     const floatingBoxRef = new AnchoredFloatingBoxRef(floatingBoxComponentRef.instance);
     const createdContent = this._createContent(configuration);
 
-    this._applicationRef.attachView(floatingBoxComponentRef.hostView);
-
     floatingBoxRef.addAfterClosedListener(() => {
       this._applicationRef.detachView(floatingBoxComponentRef.hostView);
       floatingBoxComponentRef.destroy();
@@ -57,9 +55,11 @@ export class AnchoredFloatingBoxService {
 
     floatingBoxComponentRef.instance.setTheme(configuration.theme || AnchoredFloatingBoxService._defaultTheme);
 
-    document.body.appendChild(floatingBoxComponentRef.location.nativeElement);
-
     floatingBoxComponentRef.instance.open(configuration.anchor, createdContent.rootNode);
+
+    this._applicationRef.attachView(floatingBoxComponentRef.hostView);
+
+    document.body.appendChild(floatingBoxComponentRef.location.nativeElement);
 
     return floatingBoxRef;
   }
