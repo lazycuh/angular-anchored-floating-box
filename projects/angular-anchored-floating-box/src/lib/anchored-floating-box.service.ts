@@ -50,7 +50,7 @@ export class AnchoredFloatingBoxService {
     });
 
     if (configuration.className) {
-      floatingBoxComponentRef.instance.addClassName(configuration.className);
+      floatingBoxComponentRef.instance.setClassName(configuration.className);
     }
 
     floatingBoxComponentRef.instance.setTheme(configuration.theme || AnchoredFloatingBoxService._defaultTheme);

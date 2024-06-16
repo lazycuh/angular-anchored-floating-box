@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   Host,
@@ -8,6 +9,7 @@ import {
   OnDestroy,
   OnInit,
   PLATFORM_ID,
+  signal,
   ViewEncapsulation
 } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -16,29 +18,19 @@ import { Theme } from './theme';
 import { isMobile, viewportVerticalSizeChanges } from './utils';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   // eslint-disable-next-line @angular-eslint/no-host-metadata-property
   host: {
-    '[class]': '"lc-anchored-floating-box-container " + (_className ? " " + _className : "")'
+    '[class]': '"lc-anchored-floating-box-container " + (_className() ? " " + _className() : "")'
   },
   selector: 'lc-anchored-floating-box',
   styleUrls: ['./anchored-floating-box.component.scss'],
   templateUrl: './anchored-floating-box.component.html'
 })
 export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
-  /**
-   * Optional class to add to this component
-   *
-   * @private To be used by template
-   */
-  _className?: string;
-
-  /**
-   * The current theme for this floating box
-   *
-   * @private To be used by template
-   */
-  _theme: Theme = 'light';
+  protected readonly _className = signal<string | undefined>(undefined);
+  protected readonly _theme = signal<Theme>('light');
 
   /**
    * The target at which the floating is placed
@@ -106,12 +98,12 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
 
-  addClassName(className: string) {
-    this._className = className;
+  setClassName(className: string) {
+    this._className.set(className);
   }
 
   setTheme(theme: Theme) {
-    this._theme = theme;
+    this._theme.set(theme);
   }
 
   /**
