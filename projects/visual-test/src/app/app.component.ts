@@ -1,7 +1,8 @@
-import { Component, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef } from '@angular/core';
 import { AnchoredFloatingBoxService } from 'projects/angular-anchored-floating-box/src/public-api';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   selector: 'lc-root',
   standalone: true,
@@ -13,7 +14,7 @@ export class AppComponent {
     AnchoredFloatingBoxService.setDefaultTheme('light');
   }
 
-  openFloatingBox(anchor: HTMLButtonElement, templateRef: TemplateRef<unknown>) {
+  openFloatingBox(anchor: HTMLButtonElement, templateRef: TemplateRef<object>) {
     this._floatingBoxService.open({
       anchor,
       className: 'optional-class-name',

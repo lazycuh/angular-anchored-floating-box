@@ -1,5 +1,5 @@
 {
-  "name": "@babybeet/angular-anchored-floating-box",
+  "name": "@lazycuh/angular-anchored-floating-box",
   "description": "A singleton, global Angular service to programmatically render a floating box anchored at an element that can have arbitrary content specified by either a `TemplateRef` or `@Component`",
   "version": "1.1.2",
   "author": {
@@ -25,11 +25,12 @@
   ],
   "peerDependencies": {
     "@angular/common": "16 - 18",
-    "@angular/core": "16 - 18"
+    "@angular/core": "16 - 18",
+    "rxjs": "7"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/babybeet/angular-anchored-floating-box"
+    "url": "https://github.com/lazycuh/angular-anchored-floating-box"
   },
   "devDependencies": {
     "tslib": "^2.3.0"

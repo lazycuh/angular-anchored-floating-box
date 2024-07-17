@@ -1,4 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   provideExperimentalZonelessChangeDetection,
@@ -6,13 +8,15 @@ import {
   ViewChild
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { assertThat, delayBy, fireEvent, getElementBySelector } from '@babybeet/angular-testing-kit';
+import { assertThat, delayBy, fireEvent, getElementBySelector } from '@lazycuh/angular-testing-kit';
 
 import { AnchoredFloatingBoxService } from './anchored-floating-box.service';
 import { AnchoredFloatingBoxConfiguration } from './anchored-floating-box-configuration';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lc-test',
+  standalone: true,
   template: `
     <button
       #button
@@ -28,11 +32,9 @@ import { AnchoredFloatingBoxConfiguration } from './anchored-floating-box-config
 })
 class TestBedComponent {
   @ViewChild('button')
-  // eslint-disable-next-line @stylistic/indent
   anchorRef!: ElementRef<HTMLButtonElement>;
 
   @ViewChild('template', { read: TemplateRef })
-  // eslint-disable-next-line @stylistic/indent
   templateRef!: TemplateRef<Record<string, unknown>>;
 
   constructor(readonly service: AnchoredFloatingBoxService) {}
@@ -56,7 +58,7 @@ describe('AnchoredFloatingBoxService', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestBedComponent],
+      imports: [TestBedComponent],
       providers: [AnchoredFloatingBoxService, provideExperimentalZonelessChangeDetection()]
     }).compileComponents();
 
@@ -82,7 +84,9 @@ describe('AnchoredFloatingBoxService', () => {
 
   it('Should render components as content', () => {
     @Component({
+      changeDetection: ChangeDetectionStrategy.OnPush,
       selector: 'lc-test-content-component',
+      standalone: true,
       template: '<p>Test content</p>'
     })
     class TestContentComponent {}

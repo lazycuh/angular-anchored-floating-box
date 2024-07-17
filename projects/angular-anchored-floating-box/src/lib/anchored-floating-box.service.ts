@@ -32,6 +32,8 @@ export class AnchoredFloatingBoxService {
    * supports rendering [`TemplateRef`](https://angular.io/api/core/TemplateRef) as well as any
    * [`@Component`](https://angular.io/api/core/Component) class.
    *
+   * Type parameter `T` refers to the type of template context object.
+   *
    * @param configuration The configuration object for the anchored floating box.
    *
    * @returns A ref object used to interact with the created floating box.
@@ -53,7 +55,7 @@ export class AnchoredFloatingBoxService {
       floatingBoxComponentRef.instance.setClassName(configuration.className);
     }
 
-    floatingBoxComponentRef.instance.setTheme(configuration.theme || AnchoredFloatingBoxService._defaultTheme);
+    floatingBoxComponentRef.instance.setTheme(configuration.theme ?? AnchoredFloatingBoxService._defaultTheme);
 
     floatingBoxComponentRef.instance.open(configuration.anchor, createdContent.rootNode);
 
@@ -66,7 +68,7 @@ export class AnchoredFloatingBoxService {
 
   private _createContent(configuration: AnchoredFloatingBoxConfiguration) {
     if (configuration.content instanceof TemplateRef) {
-      const embeddedView = configuration.content.createEmbeddedView(configuration.context || {});
+      const embeddedView = configuration.content.createEmbeddedView(configuration.context ?? {});
 
       this._applicationRef.attachView(embeddedView);
 
@@ -77,7 +79,7 @@ export class AnchoredFloatingBoxService {
          * a containing DOM element, then there will be multiple root nodes, in this case,
          * we want to add them all as the content by appending them to a document fragment
          */
-        rootNode: embeddedView.rootNodes.reduce((fragment, next) => {
+        rootNode: (embeddedView.rootNodes as HTMLElement[]).reduce((fragment, next) => {
           fragment.appendChild(next);
 
           return fragment;

@@ -1,4 +1,4 @@
-# angular-anchored-floating-box [![](https://circleci.com/gh/babybeet/angular-anchored-floating-box.svg?style=svg&logo=appveyor)](https://app.circleci.com/pipelines/github/babybeet/angular-anchored-floating-box?branch=main)
+# angular-anchored-floating-box [![](https://circleci.com/gh/lazycuh/angular-anchored-floating-box.svg?style=svg&logo=appveyor)](https://app.circleci.com/pipelines/github/lazycuh/angular-anchored-floating-box?branch=main)
 
 A singleton, global Angular service to programmatically render a floating box anchored at an element that can have arbitrary content specified by either a `TemplateRef` or `@Component`.
 
@@ -6,7 +6,7 @@ A singleton, global Angular service to programmatically render a floating box an
 
 <!-- toc -->
 
-- [Angular version compatibility](#angular-version-compatibility)
+- [Angular compatibility](#angular-compatibility)
 - [Installation](#installation)
 - [Available APIs](#available-apis)
   - [`AnchoredFloatingBoxService`](#anchoredfloatingboxservice)
@@ -20,23 +20,25 @@ A singleton, global Angular service to programmatically render a floating box an
 
 <!-- tocstop -->
 
-## Angular version compatibility
+## Angular compatibility
 
-- 16+
+| This library | Angular |
+| ------------ | ------- |
+| 1.x.x        | 16 - 18 |
 
 ## Installation
 
 - `npm`
   ```
-  npm i -S @babybeet/angular-anchored-floating-box
+  npm i -S @lazycuh/angular-anchored-floating-box
   ```
 - `pnpm`
   ```
-  pnpm i -S @babybeet/angular-anchored-floating-box
+  pnpm i -S @lazycuh/angular-anchored-floating-box
   ```
 - `yarn`
   ```
-  yarn add @babybeet/angular-anchored-floating-box
+  yarn add @lazycuh/angular-anchored-floating-box
   ```
 
 ## Available APIs
@@ -136,7 +138,7 @@ class AnchoredFloatingBoxRef {
 
 ```typescript
 // Import the service into your class to start using it
-import { AnchoredFloatingBoxService } from '@babybeet/anchored-floating-box';
+import { AnchoredFloatingBoxService } from '@lazycuh/anchored-floating-box';
 
 @Component({
   selector: 'test-component',

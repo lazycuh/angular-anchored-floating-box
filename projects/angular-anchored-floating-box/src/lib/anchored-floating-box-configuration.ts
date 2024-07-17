@@ -4,10 +4,8 @@ import { Theme } from './theme';
 
 /**
  * The configuration object for the current anchored floating box.
- * The type parameter `C` describes the type of the optional
- * context object passed to `TemplateRef<C>`.
  */
-export interface AnchoredFloatingBoxConfiguration<C extends Record<string, unknown> | unknown = unknown> {
+export interface AnchoredFloatingBoxConfiguration {
   /**
    * The required element that the floating box will be anchored to.
    */
@@ -21,12 +19,12 @@ export interface AnchoredFloatingBoxConfiguration<C extends Record<string, unkno
   /**
    * The required content to show, it accepts `TemplateRef` as well as any `@Component()` class.
    */
-  content: TemplateRef<C> | Type<unknown>;
+  content: TemplateRef<object> | Type<unknown>;
 
   /**
    * The optional context object that is referenced by the template ref.
    */
-  context?: C;
+  context?: object;
 
   /**
    * The optional theme for the floating box. Default is {@link Theme.LIGHT Theme.LIGHT}.

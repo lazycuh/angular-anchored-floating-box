@@ -1,14 +1,14 @@
 <button
     #button
+    style="position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%)"
     type="button"
-    (click)="openFloatingBox(button, template)"
-    style="position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%)">
+    (click)="openFloatingBox(button, template)">
     Click me
 </button>
 
 <ng-template
     #template
-    let-name
-    let-greeting="greeting">
+    let-greeting="greeting"
+    let-name>
     {{ greeting }} {{ name }}
 </ng-template>

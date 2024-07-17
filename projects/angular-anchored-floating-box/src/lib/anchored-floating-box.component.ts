@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -20,11 +21,12 @@ import { isMobile, viewportVerticalSizeChanges } from './utils';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  // eslint-disable-next-line @angular-eslint/no-host-metadata-property
   host: {
     '[class]': '"lc-anchored-floating-box-container " + (_className() ? " " + _className() : "")'
   },
+
   selector: 'lc-anchored-floating-box',
+  standalone: true,
   styleUrls: ['./anchored-floating-box.component.scss'],
   templateUrl: './anchored-floating-box.component.html'
 })
@@ -45,7 +47,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
   /**
    * The DOM element for this floating box
    */
-  private _floatingBox!: HTMLElement;
+  private _floatingBox: HTMLElement | null = null;
 
   private _viewportVerticalSizeChangeSubscription?: Subscription;
   private _afterClosedListeners?: Array<() => void>;
@@ -136,8 +138,8 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
    * @param anchor The target at which to place this anchored floating box
    * @param content The body content to show
    */
-  open(anchor: Element, content: Element) {
-    this._floatingBox = this._host.nativeElement.querySelector('.lc-anchored-floating-box') as HTMLElement;
+  open(anchor: Element, content: Element | DocumentFragment) {
+    this._floatingBox = this._host.nativeElement.querySelector('.lc-anchored-floating-box')!;
     this._anchor = anchor;
     this._floatingBox.querySelector('.lc-anchored-floating-box__content')?.appendChild(content);
     this._showBottom();
@@ -145,7 +147,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
 
   private _showBottom() {
     setTimeout(() => {
-      const floatingBoxBoundingBox = this._floatingBox.getBoundingClientRect();
+      const floatingBoxBoundingBox = this._floatingBox!.getBoundingClientRect();
       const anchorBoundingBox = this._anchor.getBoundingClientRect();
       const arrowHeight = 15;
       const spaceBetweenArrowAndAnchor = 10;
@@ -168,12 +170,12 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
         if (floatingBoxTop < 0) {
           const newFloatingBoxHeight = anchorBoundingBox.top - spaceBetweenArrowAndAnchor * 1.5;
 
-          this._floatingBox.style.height = `${newFloatingBoxHeight}px`;
+          this._floatingBox!.style.height = `${newFloatingBoxHeight}px`;
           floatingBoxTop = spaceBetweenArrowAndAnchor / 2;
         }
 
-        this._floatingBox.classList.remove('bottom');
-        this._floatingBox.classList.add('top');
+        this._floatingBox!.classList.remove('bottom');
+        this._floatingBox!.classList.add('top');
       } else {
         /**
          * If the floating box overflows the bottom edge of viewport, we want to shrink
@@ -187,7 +189,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
             floatingBoxBoundingBox.height -
             differenceBetweenFloatingBoxBottomAndViewportBottom -
             spaceBetweenArrowAndAnchor / 2;
-          this._floatingBox.style.height = `${newFloatingBoxHeight}px`;
+          this._floatingBox!.style.height = `${newFloatingBoxHeight}px`;
         }
       }
 
@@ -195,10 +197,10 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
         this._calculateRightEdgeOverflowingDistance(floatingBoxLeft, floatingBoxBoundingBox.width) ||
         this._calculateLeftEdgeOverflowingDistance(floatingBoxLeft);
 
-      this._floatingBox.style.left = `${floatingBoxLeft - horizontalDifference}px`;
-      this._floatingBox.style.top = `${floatingBoxTop}px`;
+      this._floatingBox!.style.left = `${floatingBoxLeft - horizontalDifference}px`;
+      this._floatingBox!.style.top = `${floatingBoxTop}px`;
 
-      this._floatingBox.classList.add('visible');
+      this._floatingBox!.classList.add('visible');
 
       this._enter = true;
       this._host.nativeElement.classList.add('enter');
@@ -214,7 +216,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
     const difference = left + width - window.innerWidth + spacing;
 
     if (difference > spacing) {
-      (this._floatingBox.querySelector('.lc-anchored-floating-box__arrow') as HTMLElement).style.left =
+      this._floatingBox!.querySelector<HTMLElement>('.lc-anchored-floating-box__arrow')!.style.left =
         `calc(50% + ${difference}px)`;
 
       return difference;
@@ -232,7 +234,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
       const spacing = 5;
       const newLeft = `calc(50% - ${Math.abs(left) + spacing}px)`;
 
-      (this._floatingBox.querySelector('.lc-anchored-floating-box__arrow') as HTMLElement).style.left = newLeft;
+      this._floatingBox!.querySelector<HTMLElement>('.lc-anchored-floating-box__arrow')!.style.left = newLeft;
 
       return left - spacing;
     }
@@ -249,7 +251,9 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize')
   protected _onWindowResize() {
-    setTimeout(() => this._showBottom(), 250);
+    setTimeout(() => {
+      this._showBottom();
+    }, 250);
   }
 
   protected _onBackdropClick() {
@@ -261,9 +265,13 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
    */
   protected _onAnimationDone() {
     if (!this._enter) {
-      this._afterClosedListeners?.forEach(listener => listener());
+      this._afterClosedListeners?.forEach(listener => {
+        listener();
+      });
     } else {
-      this._afterOpenedListeners?.forEach(listener => listener());
+      this._afterOpenedListeners?.forEach(listener => {
+        listener();
+      });
     }
   }
 }
