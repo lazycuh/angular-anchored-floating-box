@@ -50,7 +50,7 @@ These are the symbols that are available from this package
 This class allows to show a floating box anchored at an element. See `AnchoredFloatingBoxConfiguration` for the different options to configure the floating box.
 
 ```ts
-class AnchoredFloatingBoxService {
+export declare class AnchoredFloatingBoxService {
   /**
    * Set the default theme that will be used for all floating boxes created in the future.
    *
@@ -60,9 +60,10 @@ class AnchoredFloatingBoxService {
 
   /**
    * Open a new floating box with a configuration object specified by `configuration`. This service
-   * supports rendering `TemplateRef` as well as any `@Component()` class.
+   * supports rendering [`TemplateRef`](https://angular.io/api/core/TemplateRef) as well as any
+   * [`@Component`](https://angular.io/api/core/Component) class.
    *
-   * @param configuration The configuration object for the anchored floating box
+   * @param configuration The configuration object for the anchored floating box.
    *
    * @returns A ref object used to interact with the created floating box.
    */
@@ -72,10 +73,10 @@ class AnchoredFloatingBoxService {
 
 ### `AnchoredFloatingBoxConfiguration`
 
-The configuration object for the current anchored floating box. The type parameter `C` describes the type of the optional context object passed to `TemplateRef<C>`.
+The configuration object for the current anchored floating box.
 
 ```ts
-interface AnchoredFloatingBoxConfiguration<C extends Record<string, unknown> | unknown = unknown> {
+interface AnchoredFloatingBoxConfiguration {
   /**
    * The required element that the floating box will be anchored to.
    */
@@ -89,15 +90,15 @@ interface AnchoredFloatingBoxConfiguration<C extends Record<string, unknown> | u
   /**
    * The required content to show, it accepts `TemplateRef` as well as any `@Component()` class.
    */
-  content: TemplateRef<C> | Type<unknown>;
+  content: TemplateRef<unknown> | Type<unknown>;
 
   /**
    * The optional context object that is referenced by the template ref.
    */
-  context?: C;
+  context?: unknown;
 
   /**
-   * The optional theme for the floating box. Default is `light`.
+   * The optional theme for the floating box. Default is {@link Theme.LIGHT Theme.LIGHT}.
    */
   theme?: Theme;
 }

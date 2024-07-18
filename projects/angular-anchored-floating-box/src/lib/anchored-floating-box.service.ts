@@ -32,8 +32,6 @@ export class AnchoredFloatingBoxService {
    * supports rendering [`TemplateRef`](https://angular.io/api/core/TemplateRef) as well as any
    * [`@Component`](https://angular.io/api/core/Component) class.
    *
-   * Type parameter `T` refers to the type of template context object.
-   *
    * @param configuration The configuration object for the anchored floating box.
    *
    * @returns A ref object used to interact with the created floating box.

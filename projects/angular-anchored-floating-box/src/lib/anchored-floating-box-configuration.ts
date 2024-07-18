@@ -19,12 +19,12 @@ export interface AnchoredFloatingBoxConfiguration {
   /**
    * The required content to show, it accepts `TemplateRef` as well as any `@Component()` class.
    */
-  content: TemplateRef<object> | Type<unknown>;
+  content: TemplateRef<unknown> | Type<unknown>;
 
   /**
    * The optional context object that is referenced by the template ref.
    */
-  context?: object;
+  context?: unknown;
 
   /**
    * The optional theme for the floating box. Default is {@link Theme.LIGHT Theme.LIGHT}.
