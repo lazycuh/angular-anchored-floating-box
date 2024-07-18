@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
