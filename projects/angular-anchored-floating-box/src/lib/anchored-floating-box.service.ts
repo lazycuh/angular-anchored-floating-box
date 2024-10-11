@@ -44,6 +44,7 @@ export class AnchoredFloatingBoxService {
     const createdContent = this._createContent(configuration);
 
     floatingBoxRef.addAfterClosedListener(() => {
+      document.body.removeChild(floatingBoxComponentRef.location.nativeElement);
       this._applicationRef.detachView(floatingBoxComponentRef.hostView);
       floatingBoxComponentRef.destroy();
       createdContent.ref.destroy();

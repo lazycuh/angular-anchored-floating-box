@@ -43,7 +43,7 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
 
 .lc-anchored-floating-box {
     position: absolute;
-    border-radius: 5px;
+    border-radius: 8px;
     animation-duration: 0.25s;
     animation-timing-function: $easing-function;
     animation-fill-mode: forwards;
@@ -85,7 +85,7 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
         height: inherit;
         display: inline-block;
         box-shadow: var(--anchored-floating-box-shadow);
-        border-radius: 3px;
+        border-radius: 4px;
     }
 }
 
