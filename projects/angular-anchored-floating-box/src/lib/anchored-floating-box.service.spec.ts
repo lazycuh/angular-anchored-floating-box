@@ -15,7 +15,6 @@ import { AnchoredFloatingBoxConfiguration } from './anchored-floating-box-config
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lc-test',
-  standalone: true,
   template: `
     <button
       #button

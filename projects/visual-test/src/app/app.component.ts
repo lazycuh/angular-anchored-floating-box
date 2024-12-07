@@ -5,7 +5,6 @@ import { AnchoredFloatingBoxService } from 'projects/angular-anchored-floating-b
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   selector: 'lc-root',
-  standalone: true,
   styleUrl: './app.component.scss',
   templateUrl: './app.component.html'
 })

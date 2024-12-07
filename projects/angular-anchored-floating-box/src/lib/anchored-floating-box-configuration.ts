@@ -27,7 +27,7 @@ export interface AnchoredFloatingBoxConfiguration {
   context?: unknown;
 
   /**
-   * The optional theme for the floating box. Default is {@link Theme.LIGHT Theme.LIGHT}.
+   * The optional theme for the floating box. Default is `light`.
    */
   theme?: Theme;
 }

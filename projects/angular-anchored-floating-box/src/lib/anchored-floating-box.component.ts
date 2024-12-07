@@ -1,18 +1,16 @@
-import { isPlatformBrowser } from '@angular/common';
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   Host,
   HostListener,
-  Inject,
-  OnDestroy,
-  OnInit,
-  PLATFORM_ID,
+  inject,
   signal,
   ViewEncapsulation
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { Theme } from './theme';
 import { isMobile, viewportVerticalSizeChanges } from './utils';
@@ -25,11 +23,10 @@ import { isMobile, viewportVerticalSizeChanges } from './utils';
   },
 
   selector: 'lc-anchored-floating-box',
-  standalone: true,
   styleUrls: ['./anchored-floating-box.component.scss'],
   templateUrl: './anchored-floating-box.component.html'
 })
-export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
+export class AnchoredFloatingBoxComponent {
   protected readonly _className = signal<string | undefined>(undefined);
   protected readonly _theme = signal<Theme>('light');
 
@@ -48,50 +45,48 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
    */
   private _floatingBox: HTMLElement | null = null;
 
-  private _viewportVerticalSizeChangeSubscription?: Subscription;
   private _afterClosedListeners?: Array<() => void>;
   private _afterOpenedListeners?: Array<() => void>;
 
-  constructor(
-    @Host() private readonly _host: ElementRef<HTMLElement>,
-    @Inject(PLATFORM_ID) private readonly _platformId: object
-  ) {}
+  constructor(@Host() private readonly _host: ElementRef<HTMLElement>) {
+    const destroyRef = inject(DestroyRef);
 
-  ngOnInit() {
-    if (!isPlatformBrowser(this._platformId)) {
-      return;
-    }
+    afterNextRender({
+      write: () => {
+        destroyRef.onDestroy(() => {
+          this._afterClosedListeners = undefined;
+          this._afterOpenedListeners = undefined;
+        });
 
-    if (isMobile()) {
-      this._viewportVerticalSizeChangeSubscription = viewportVerticalSizeChanges().subscribe({
-        next: event => {
-          if (this._floatingBox) {
-            const floatingBoxBoundingBox = this._floatingBox.getBoundingClientRect();
-
-            /**
-             * If this floating box's bottom is larger than the newly resized viewport's height,
-             * then we want to shift this floating box up by the difference between its bottom's value
-             * and the new viewport's height value, otherwise, we want to place the floating at the bottom
-             * of the anchor
-             */
-            if (floatingBoxBoundingBox.bottom >= event.height) {
-              if (event.resizeFactor < 1) {
-                this._floatingBox.style.top = `${event.height - floatingBoxBoundingBox.height - 60}px`;
-              }
-            } else {
-              this._showBottom();
-            }
-          }
+        if (!isMobile()) {
+          return;
         }
-      });
-    }
-  }
 
-  ngOnDestroy() {
-    this._viewportVerticalSizeChangeSubscription?.unsubscribe();
+        viewportVerticalSizeChanges()
+          .pipe(takeUntilDestroyed(destroyRef))
+          .subscribe({
+            next: event => {
+              if (this._floatingBox) {
+                const floatingBoxBoundingBox = this._floatingBox.getBoundingClientRect();
 
-    this._afterClosedListeners = undefined;
-    this._afterOpenedListeners = undefined;
+                /**
+                 * If this floating box's bottom is larger than the newly resized viewport's height,
+                 * then we want to shift this floating box up by the difference between its bottom's value
+                 * and the new viewport's height value, otherwise, we want to place the floating at the bottom
+                 * of the anchor
+                 */
+                if (floatingBoxBoundingBox.bottom >= event.height) {
+                  if (event.resizeFactor < 1) {
+                    this._floatingBox.style.top = `${event.height - floatingBoxBoundingBox.height - 60}px`;
+                  }
+                } else {
+                  this._showBottom();
+                }
+              }
+            }
+          });
+      }
+    });
   }
 
   @HostListener('click', ['$event'])
@@ -203,7 +198,7 @@ export class AnchoredFloatingBoxComponent implements OnInit, OnDestroy {
 
       this._enter = true;
       this._host.nativeElement.classList.add('enter');
-    });
+    }, 32);
   }
 
   /**

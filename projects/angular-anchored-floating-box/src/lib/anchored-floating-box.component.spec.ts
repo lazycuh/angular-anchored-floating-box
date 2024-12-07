@@ -29,7 +29,7 @@ describe('AnchoredFloatingBoxComponent', () => {
     content.innerText = 'Hello World';
     component.open(document.createElement('button'), content);
 
-    await delayBy(16);
+    await delayBy(32);
 
     assertThat(`${classPrefix}__content`).hasInnerHtml('<span>Hello World</span>');
   });
@@ -37,7 +37,7 @@ describe('AnchoredFloatingBoxComponent', () => {
   it('Should be placed at the bottom of anchor element', async () => {
     component.open(document.createElement('button'), document.createElement('div'));
 
-    await delayBy(16);
+    await delayBy(32);
 
     assertThat(debugElement.query(By.css('.top'))).doesNotExist();
     assertThat(debugElement.query(By.css('.bottom'))).exists();
@@ -51,7 +51,7 @@ describe('AnchoredFloatingBoxComponent', () => {
 
     component.open(anchor, document.createElement('span'));
 
-    await delayBy(16);
+    await delayBy(32);
 
     assertThat(debugElement.query(By.css('.bottom'))).doesNotExist();
     assertThat(debugElement.query(By.css('.top'))).exists();
@@ -60,7 +60,7 @@ describe('AnchoredFloatingBoxComponent', () => {
   it('Should close floating box when its backdrop is clicked', async () => {
     component.open(document.createElement('button'), document.createElement('span'));
 
-    await delayBy(16);
+    await delayBy(32);
 
     expect(debugElement.classes['enter']).toBeTrue();
 
@@ -74,7 +74,7 @@ describe('AnchoredFloatingBoxComponent', () => {
   it('Should use light theme by default', async () => {
     component.open(document.createElement('button'), document.createElement('span'));
 
-    await delayBy(16);
+    await delayBy(32);
 
     assertThat(debugElement.query(By.css('.light'))).exists();
   });
@@ -86,13 +86,13 @@ describe('AnchoredFloatingBoxComponent', () => {
 
     component.open(document.createElement('button'), document.createElement('span'));
 
-    await delayBy(16);
+    await delayBy(32);
 
     expect(debugElement.classes['enter']).toBeTrue();
 
     debugElement.query(By.css(`${classPrefix}__backdrop`)).triggerEventHandler('click');
 
-    await delayBy(16);
+    await delayBy(32);
 
     expect(debugElement.classes['leave']).toBeTrue();
     expect(clickHandlerSpy).not.toHaveBeenCalled();

@@ -25,6 +25,7 @@ A singleton, global Angular service to programmatically render a floating box an
 | This library | Angular |
 | ------------ | ------- |
 | 1.x.x        | 16 - 18 |
+| 2.x.x        | 19      |
 
 ## Installation
 
@@ -50,7 +51,7 @@ These are the symbols that are available from this package
 This class allows to show a floating box anchored at an element. See `AnchoredFloatingBoxConfiguration` for the different options to configure the floating box.
 
 ```ts
-export declare class AnchoredFloatingBoxService {
+class AnchoredFloatingBoxService {
   /**
    * Set the default theme that will be used for all floating boxes created in the future.
    *
@@ -98,7 +99,7 @@ interface AnchoredFloatingBoxConfiguration {
   context?: unknown;
 
   /**
-   * The optional theme for the floating box. Default is {@link Theme.LIGHT Theme.LIGHT}.
+   * The optional theme for the floating box. Default is `light`.
    */
   theme?: Theme;
 }
