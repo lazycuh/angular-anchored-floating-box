@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, provideExperimentalZonelessChangeDetection, Type } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  provideExperimentalZonelessChangeDetection,
+  Type,
+  viewChild
+} from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { assertThat, delayBy, fireEvent } from '@lazycuh/angular-testing-kit';
 
@@ -136,5 +142,74 @@ describe(TriggerFloatingBoxForDirective.name, () => {
     fixture.detectChanges();
 
     assertThat(`${classSelectorPrefix}__content`).hasTextContentMatching(/Hello There!/);
+  });
+
+  it('Can set class name', async () => {
+    @Component({
+      changeDetection: ChangeDetectionStrategy.OnPush,
+      imports: [TriggerFloatingBoxForDirective],
+      selector: 'lc-test',
+      template: `
+        <button
+          id="click-me"
+          [lcTriggerFloatingBoxFor]="template"
+          lcFloatingBoxClassName="custom-class"
+          type="button">
+          Click me
+        </button>
+
+        <ng-template
+          #template
+          let-name>
+          <span>Hello {{ name }}</span>
+        </ng-template>
+      `
+    })
+    class TestBedComponent {}
+    const fixture = await render(TestBedComponent);
+
+    fireEvent('#click-me', 'click');
+
+    fixture.detectChanges();
+
+    assertThat('.custom-class').exists();
+  });
+
+  it('Can export directive under "floatingBoxRef" name', async () => {
+    @Component({
+      changeDetection: ChangeDetectionStrategy.OnPush,
+      imports: [TriggerFloatingBoxForDirective],
+      selector: 'lc-test',
+      template: `
+        <button
+          id="click-me"
+          [lcTriggerFloatingBoxFor]="template"
+          #floatingBoxRef="floatingBoxRef"
+          type="button">
+          Click me
+        </button>
+
+        <ng-template #template>
+          <span>Hi there!</span>
+        </ng-template>
+      `
+    })
+    class TestBedComponent {
+      floatingBoxRef = viewChild.required('floatingBoxRef', { read: TriggerFloatingBoxForDirective });
+    }
+
+    const fixture = await render(TestBedComponent);
+
+    fireEvent('#click-me', 'click');
+
+    fixture.detectChanges();
+
+    assertThat(`${classSelectorPrefix}__content`).hasTextContentMatching(/Hi there!/);
+
+    fixture.componentInstance.floatingBoxRef().close();
+
+    fixture.detectChanges();
+
+    assertThat(`${classSelectorPrefix}-container.leave`).exists();
   });
 });
