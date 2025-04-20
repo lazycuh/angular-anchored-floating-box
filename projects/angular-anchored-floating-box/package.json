@@ -1,7 +1,7 @@
 {
   "name": "@lazycuh/angular-anchored-floating-box",
   "description": "A singleton, global Angular service to programmatically render a floating box anchored at an element that can have arbitrary content specified by either a `TemplateRef` or `@Component`",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": {
     "name": "Baby Beet"
   },
