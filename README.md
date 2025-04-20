@@ -1,6 +1,6 @@
 # angular-anchored-floating-box [![](https://circleci.com/gh/lazycuh/angular-anchored-floating-box.svg?style=svg&logo=appveyor)](https://app.circleci.com/pipelines/github/lazycuh/angular-anchored-floating-box?branch=main)
 
-A singleton, global Angular service to programmatically render a floating box anchored at an element that can have arbitrary content specified by either a `TemplateRef` or `@Component`.
+A singleton, global Angular service to declaratively/programmatically render a floating box anchored at an element that can have arbitrary content specified by either a `TemplateRef` or `@Component`.
 
 ## Table of contents
 
@@ -9,6 +9,8 @@ A singleton, global Angular service to programmatically render a floating box an
 - [Angular compatibility](#angular-compatibility)
 - [Installation](#installation)
 - [Available APIs](#available-apis)
+  - [`TriggerFloatingBoxForDirective`](#triggerfloatingboxfordirective)
+    - [Example:](#example)
   - [`AnchoredFloatingBoxService`](#anchoredfloatingboxservice)
   - [`AnchoredFloatingBoxConfiguration`](#anchoredfloatingboxconfiguration)
   - [`Theme`](#theme)
@@ -46,9 +48,44 @@ A singleton, global Angular service to programmatically render a floating box an
 
 These are the symbols that are available from this package
 
+### `TriggerFloatingBoxForDirective`
+
+- `lcTriggerFloatingBoxFor`: **Required** input that accepts a `TemplateRef` that specifies the content of the floating box, the floating box is anchored to the HTMLE element to which this input is applied
+- `lcFloatingBoxContext`: **Optional** input to specify the context to provide to the `TemplateRef`.
+- `lcFloatingBoxTheme`: **Optional** input that accepts either `dark` or `light` to pick which theme to apply to the floating box. `light` is the default.
+
+#### Example:
+
+```ts
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'lc-test',
+  // Import the directive to use it
+  imports: [TriggerFloatingBoxForDirective],
+  template: `
+    <button
+      id="click-me"
+      [lcTriggerFloatingBoxFor]="template"
+      [lcFloatingBoxContext]="{ $implicit: 'There!' }"
+      <!-- Or just lcTriggerFloatingTheme='dark' if your value is static -->
+      [lcTriggerFloatingTheme]="'dark'"
+      type="button">
+      Click me
+    </button>
+
+    <ng-template
+      #template
+      let-name>
+      <span>Hello {{ name }}</span>
+    </ng-template>
+  `
+})
+class MyComponent {}
+```
+
 ### `AnchoredFloatingBoxService`
 
-This class allows to show a floating box anchored at an element. See `AnchoredFloatingBoxConfiguration` for the different options to configure the floating box.
+This class allows to progratically show a floating box anchored at an element. See `AnchoredFloatingBoxConfiguration` for the different options to configure the floating box.
 
 ```ts
 class AnchoredFloatingBoxService {
