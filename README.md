@@ -69,6 +69,11 @@ class AnchoredFloatingBoxService {
    * @returns A ref object used to interact with the created floating box.
    */
   open(configuration: AnchoredFloatingBoxConfiguration): AnchoredFloatingBoxRef;
+
+  /**
+   * Close the anchored floating box that was last opened.
+   */
+  close(): void;
 }
 ```
 

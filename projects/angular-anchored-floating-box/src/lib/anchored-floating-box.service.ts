@@ -16,6 +16,8 @@ import { Theme } from './theme';
 export class AnchoredFloatingBoxService {
   private static _defaultTheme: Theme = 'light';
 
+  private _lastAnchoredFloatingBoxRef: AnchoredFloatingBoxRef | null = null;
+
   constructor(private readonly _applicationRef: ApplicationRef) {}
 
   /**
@@ -62,6 +64,8 @@ export class AnchoredFloatingBoxService {
 
     document.body.appendChild(floatingBoxComponentRef.location.nativeElement);
 
+    this._lastAnchoredFloatingBoxRef = floatingBoxRef;
+
     return floatingBoxRef;
   }
 
@@ -94,5 +98,12 @@ export class AnchoredFloatingBoxService {
       ref: componentRef,
       rootNode: componentRef.location.nativeElement as Element
     };
+  }
+
+  /**
+   * Close the anchored floating box that was last opened.
+   */
+  close() {
+    this._lastAnchoredFloatingBoxRef?.close();
   }
 }

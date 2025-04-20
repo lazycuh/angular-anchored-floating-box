@@ -214,4 +214,21 @@ describe('AnchoredFloatingBoxService', () => {
 
     assertThat(`${classSelectorPrefix}-container.hello-world`).exists();
   });
+
+  it('Should close last floating box', () => {
+    testBedComponent.openAnchoredFloatingBox({ className: 'hello-world' });
+    fixture.detectChanges();
+    assertThat(`${classSelectorPrefix}-container.hello-world`).exists();
+
+    testBedComponent.openAnchoredFloatingBox({ className: 'hello-world-2' });
+    fixture.detectChanges();
+    assertThat(`${classSelectorPrefix}-container.hello-world-2`).exists();
+
+    testBedComponent.service.close();
+
+    fixture.detectChanges();
+
+    assertThat(`${classSelectorPrefix}-container.hello-world`).exists();
+    assertThat(`${classSelectorPrefix}-container.hello-world-2.leave`).exists();
+  });
 });
