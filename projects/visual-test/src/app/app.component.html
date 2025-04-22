@@ -2,13 +2,16 @@
     #button
     style="position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%)"
     type="button"
-    (click)="openFloatingBox(button, template)">
+    [lcTriggerFloatingBoxFor]="floatingBox">
     Click me
 </button>
 
-<ng-template
-    #template
-    let-greeting="greeting"
-    let-name>
-    {{ greeting }} {{ name }}
-</ng-template>
+<lc-anchored-floating-box
+    #floatingBox
+    class="hello-world"
+    theme="dark"
+    (beforeOpened)="onOpened()"
+    (closed)="onClosed()"
+    (opened)="onOpened()">
+    Hello World
+</lc-anchored-floating-box>

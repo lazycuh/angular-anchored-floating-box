@@ -1,34 +1,50 @@
+/* eslint-disable @angular-eslint/component-class-suffix */
 import {
   afterNextRender,
+  ApplicationRef,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  ElementRef,
-  Host,
+  EmbeddedViewRef,
   HostListener,
   inject,
-  signal,
+  input,
+  output,
+  TemplateRef,
+  viewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { Theme } from './theme';
-import { isMobile, viewportVerticalSizeChanges } from './utils';
+import { viewportVerticalSizeChanges } from './utils';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: {
-    '[class]': '"lc-anchored-floating-box-container " + (_className() ? " " + _className() : "")'
-  },
-
   selector: 'lc-anchored-floating-box',
+  standalone: true,
   styleUrls: ['./anchored-floating-box.component.scss'],
   templateUrl: './anchored-floating-box.component.html'
 })
-export class AnchoredFloatingBoxComponent {
-  protected readonly _className = signal<string | undefined>(undefined);
-  protected readonly _theme = signal<Theme>('light');
+export class AnchoredFloatingBox {
+  readonly className = input<string>(undefined, { alias: 'class' });
+  readonly theme = input<Theme>('light');
+
+  readonly closed = output();
+  readonly beforeOpened = output();
+  readonly opened = output();
+
+  private readonly _templateRef = viewChild.required(TemplateRef);
+  private readonly _applicationRef = inject(ApplicationRef);
+
+  private _renderedTemplate!: EmbeddedViewRef<unknown>;
+  private _floatingBoxContainer!: HTMLElement;
+
+  /**
+   * The DOM element for this floating box
+   */
+  private _floatingBox: HTMLElement | null = null;
 
   /**
    * The target at which the floating is placed
@@ -38,50 +54,36 @@ export class AnchoredFloatingBoxComponent {
   /**
    * Are we entering into viewport or leaving?
    */
-  private _enter = false;
 
-  /**
-   * The DOM element for this floating box
-   */
-  private _floatingBox: HTMLElement | null = null;
+  private _isEntering = false;
 
-  private _afterClosedListeners?: Array<() => void>;
-  private _afterOpenedListeners?: Array<() => void>;
-
-  constructor(@Host() private readonly _host: ElementRef<HTMLElement>) {
+  constructor() {
     const destroyRef = inject(DestroyRef);
 
     afterNextRender({
       write: () => {
-        destroyRef.onDestroy(() => {
-          this._afterClosedListeners = undefined;
-          this._afterOpenedListeners = undefined;
-        });
-
-        if (!isMobile()) {
-          return;
-        }
-
         viewportVerticalSizeChanges()
           .pipe(takeUntilDestroyed(destroyRef))
           .subscribe({
             next: event => {
-              if (this._floatingBox) {
-                const floatingBoxBoundingBox = this._floatingBox.getBoundingClientRect();
+              if (!this._floatingBox) {
+                return;
+              }
 
-                /**
-                 * If this floating box's bottom is larger than the newly resized viewport's height,
-                 * then we want to shift this floating box up by the difference between its bottom's value
-                 * and the new viewport's height value, otherwise, we want to place the floating at the bottom
-                 * of the anchor
-                 */
-                if (floatingBoxBoundingBox.bottom >= event.height) {
-                  if (event.resizeFactor < 1) {
-                    this._floatingBox.style.top = `${event.height - floatingBoxBoundingBox.height - 60}px`;
-                  }
-                } else {
-                  this._showBottom();
+              const floatingBoxBoundingBox = this._floatingBox.getBoundingClientRect();
+
+              /**
+               * If this floating box's bottom is larger than the newly resized viewport's height,
+               * then we want to shift this floating box up by the difference between its bottom's value
+               * and the new viewport's height value, otherwise, we want to place the floating at the bottom
+               * of the anchor
+               */
+              if (floatingBoxBoundingBox.bottom >= event.height) {
+                if (event.resizeFactor < 1) {
+                  this._floatingBox.style.top = `${event.height - floatingBoxBoundingBox.height - 60}px`;
                 }
+              } else {
+                this._showBottom();
               }
             }
           });
@@ -89,41 +91,16 @@ export class AnchoredFloatingBoxComponent {
     });
   }
 
-  @HostListener('click', ['$event'])
   protected _onPreventClickEventFromBubbling(event: Event) {
     event.stopPropagation();
-  }
-
-  setClassName(className: string) {
-    this._className.set(className);
-  }
-
-  setTheme(theme: Theme) {
-    this._theme.set(theme);
   }
 
   /**
    * Close this anchored floating box
    */
   close() {
-    this._enter = false;
-    this._host.nativeElement.classList.add('leave');
-  }
-
-  addAfterClosedListener(listener: () => void) {
-    if (!Array.isArray(this._afterClosedListeners)) {
-      this._afterClosedListeners = [];
-    }
-
-    this._afterClosedListeners.push(listener);
-  }
-
-  addAfterOpenedListener(listener: () => void) {
-    if (!Array.isArray(this._afterOpenedListeners)) {
-      this._afterOpenedListeners = [];
-    }
-
-    this._afterOpenedListeners.push(listener);
+    this._isEntering = false;
+    this._floatingBoxContainer.classList.add('is-leaving');
   }
 
   /**
@@ -132,10 +109,19 @@ export class AnchoredFloatingBoxComponent {
    * @param anchor The target at which to place this anchored floating box
    * @param content The body content to show
    */
-  open(anchor: Element, content: Element | DocumentFragment) {
-    this._floatingBox = this._host.nativeElement.querySelector('.lc-anchored-floating-box')!;
+  open(anchor: Element) {
+    this._renderedTemplate = this._templateRef().createEmbeddedView({}, this._applicationRef.injector);
+
+    this._floatingBoxContainer = this._renderedTemplate.rootNodes[0] as HTMLElement;
+
+    this._applicationRef.attachView(this._renderedTemplate);
+    document.body.appendChild(this._floatingBoxContainer);
+
+    this._floatingBox = this._floatingBoxContainer.querySelector('.lc-anchored-floating-box')!;
     this._anchor = anchor;
-    this._floatingBox.querySelector('.lc-anchored-floating-box__content')?.appendChild(content);
+
+    this.beforeOpened.emit();
+
     this._showBottom();
   }
 
@@ -168,8 +154,8 @@ export class AnchoredFloatingBoxComponent {
           floatingBoxTop = spaceBetweenArrowAndAnchor / 2;
         }
 
-        this._floatingBox!.classList.remove('bottom');
-        this._floatingBox!.classList.add('top');
+        this._floatingBox!.classList.remove('bottom-anchored');
+        this._floatingBox!.classList.add('top-anchored');
       } else {
         /**
          * If the floating box overflows the bottom edge of viewport, we want to shrink
@@ -194,10 +180,8 @@ export class AnchoredFloatingBoxComponent {
       this._floatingBox!.style.left = `${floatingBoxLeft - horizontalDifference}px`;
       this._floatingBox!.style.top = `${floatingBoxTop}px`;
 
-      this._floatingBox!.classList.add('visible');
-
-      this._enter = true;
-      this._host.nativeElement.classList.add('enter');
+      this._isEntering = true;
+      this._floatingBoxContainer.classList.add('is-entering');
     }, 32);
   }
 
@@ -258,14 +242,13 @@ export class AnchoredFloatingBoxComponent {
    * @private To be used by template
    */
   protected _onAnimationDone() {
-    if (!this._enter) {
-      this._afterClosedListeners?.forEach(listener => {
-        listener();
-      });
+    if (!this._isEntering) {
+      this.closed.emit();
+      document.body.removeChild(this._floatingBoxContainer);
+      this._applicationRef.detachView(this._renderedTemplate);
+      this._renderedTemplate.destroy();
     } else {
-      this._afterOpenedListeners?.forEach(listener => {
-        listener();
-      });
+      this.opened.emit();
     }
   }
 }

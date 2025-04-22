@@ -1,9 +1,5 @@
 $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
 
-.lc-anchored-floating-box-container {
-    display: flex;
-}
-
 .lc-anchored-floating-box-container,
 .lc-anchored-floating-box__backdrop {
     position: fixed;
@@ -14,28 +10,33 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
 }
 
 .lc-anchored-floating-box-container {
+    display: flex;
     z-index: 500;
 
-    &.enter {
+    &.is-entering {
         pointer-events: all;
 
-        .lc-anchored-floating-box.bottom {
+        .lc-anchored-floating-box {
+            opacity: 1;
+        }
+
+        .lc-anchored-floating-box.bottom-anchored {
             animation-name: show-bottom;
         }
 
-        .lc-anchored-floating-box.top {
+        .lc-anchored-floating-box.top-anchored {
             animation-name: show-top;
         }
     }
 
-    &.leave {
+    &.is-leaving {
         pointer-events: none;
 
-        .lc-anchored-floating-box.bottom {
+        .lc-anchored-floating-box.bottom-anchored {
             animation-name: hide-bottom;
         }
 
-        .lc-anchored-floating-box.top {
+        .lc-anchored-floating-box.top-anchored {
             animation-name: hide-top;
         }
     }
@@ -43,7 +44,7 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
 
 .lc-anchored-floating-box {
     position: absolute;
-    border-radius: 8px;
+    border-radius: 6px;
     animation-duration: 0.25s;
     animation-timing-function: $easing-function;
     animation-fill-mode: forwards;
@@ -53,17 +54,13 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
     box-shadow: var(--anchored-floating-box-shadow);
     opacity: 0;
 
-    &.visible {
-        opacity: 1;
-    }
-
-    &.dark {
+    &.dark-theme {
         --anchored-floating-box-bg-color: #494949;
         --anchored-floating-box-text-color: #fff;
         --anchored-floating-box-shadow: 0px 0.5rem 0.75rem rgba(0, 0, 0, 0.15), 0px 0.25rem 3rem rgba(0, 0, 0, 0.15);
     }
 
-    &.light {
+    &.light-theme {
         --anchored-floating-box-bg-color: #fff;
         --anchored-floating-box-text-color: #000;
         --anchored-floating-box-shadow: 0px 0.5rem 0.75rem rgba(0, 0, 0, 0.08), 0px 0.25rem 3rem rgba(0, 0, 0, 0.08);
@@ -102,7 +99,7 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
     max-width: 98vw;
 }
 
-.lc-anchored-floating-box.top .lc-anchored-floating-box__arrow {
+.lc-anchored-floating-box.top-anchored .lc-anchored-floating-box__arrow {
     transform: translateX(-50%);
     top: 100%;
     left: 50%;
@@ -113,7 +110,7 @@ $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
     }
 }
 
-.lc-anchored-floating-box.bottom .lc-anchored-floating-box__arrow {
+.lc-anchored-floating-box.bottom-anchored .lc-anchored-floating-box__arrow {
     transform: translateX(-50%);
     top: -20px;
     left: 50%;

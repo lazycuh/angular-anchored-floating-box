@@ -1,8 +1,6 @@
-import { Directive, HostListener, inject, input, TemplateRef } from '@angular/core';
+import { Directive, HostListener, input } from '@angular/core';
 
-import { AnchoredFloatingBoxService } from './anchored-floating-box.service';
-import { AnchoredFloatingBoxRef } from './anchored-floating-box-ref';
-import { Theme } from './theme';
+import { AnchoredFloatingBox } from './anchored-floating-box.component';
 
 @Directive({
   exportAs: 'floatingBoxRef',
@@ -10,29 +8,16 @@ import { Theme } from './theme';
   standalone: true
 })
 export class TriggerFloatingBoxForDirective {
-  readonly templateRef = input.required<TemplateRef<unknown>>({ alias: 'lcTriggerFloatingBoxFor' });
-  readonly context = input<Record<string, unknown>>(undefined, { alias: 'lcFloatingBoxContext' });
-  readonly theme = input<Theme>(undefined, { alias: 'lcFloatingBoxTheme' });
-  readonly className = input<string>(undefined, { alias: 'lcFloatingBoxClassName' });
-
-  private readonly _anchoredFloatingBoxService = inject(AnchoredFloatingBoxService);
-
-  private _floatingBoxRef!: AnchoredFloatingBoxRef;
+  readonly floatingBox = input.required<AnchoredFloatingBox>({ alias: 'lcTriggerFloatingBoxFor' });
 
   @HostListener('click', ['$event'])
   protected _onClick(event: Event): void {
     event.stopPropagation();
 
-    this._floatingBoxRef = this._anchoredFloatingBoxService.open({
-      anchor: event.target as HTMLElement,
-      className: this.className(),
-      content: this.templateRef(),
-      context: this.context(),
-      theme: this.theme()
-    });
+    this.floatingBox().open(event.target as HTMLElement);
   }
 
   close() {
-    this._floatingBoxRef.close();
+    this.floatingBox().close();
   }
 }

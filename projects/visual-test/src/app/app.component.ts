@@ -1,28 +1,21 @@
-import { ChangeDetectionStrategy, Component, TemplateRef } from '@angular/core';
-import { AnchoredFloatingBoxService } from 'projects/angular-anchored-floating-box/src/public-api';
+/* eslint-disable no-console */
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AnchoredFloatingBox } from 'projects/angular-anchored-floating-box/src/lib/anchored-floating-box.component';
+import { TriggerFloatingBoxForDirective } from 'projects/angular-anchored-floating-box/src/public-api';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [AnchoredFloatingBox, TriggerFloatingBoxForDirective],
   selector: 'lc-root',
   styleUrl: './app.component.scss',
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  constructor(private readonly _floatingBoxService: AnchoredFloatingBoxService) {
-    AnchoredFloatingBoxService.setDefaultTheme('light');
+  onOpened() {
+    console.log('opened');
   }
 
-  openFloatingBox(anchor: HTMLButtonElement, templateRef: TemplateRef<object>) {
-    this._floatingBoxService.open({
-      anchor,
-      className: 'optional-class-name',
-      content: templateRef,
-      context: {
-        $implicit: 'Angular!!!',
-        greeting: 'Hello'
-      },
-      theme: 'dark'
-    });
+  onClosed() {
+    console.log('closed');
   }
 }

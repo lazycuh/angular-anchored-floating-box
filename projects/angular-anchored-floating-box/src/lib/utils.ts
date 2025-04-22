@@ -1,10 +1,6 @@
 import { fromEvent, Observable } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 
-export function isMobile() {
-  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-}
-
 export interface ResizeEvent {
   height: number;
   resizeFactor: number;

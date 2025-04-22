@@ -8,7 +8,7 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { assertThat, delayBy, fireEvent } from '@lazycuh/angular-testing-kit';
 
-import { AnchoredFloatingBoxService } from './anchored-floating-box.service';
+import { AnchoredFloatingBox } from './anchored-floating-box.component';
 import { TriggerFloatingBoxForDirective } from './trigger-floating-box-for.directive';
 
 describe(TriggerFloatingBoxForDirective.name, () => {
@@ -17,7 +17,7 @@ describe(TriggerFloatingBoxForDirective.name, () => {
   async function render<T>(testBedComponent: Type<T>) {
     await TestBed.configureTestingModule({
       imports: [testBedComponent],
-      providers: [AnchoredFloatingBoxService, provideExperimentalZonelessChangeDetection()]
+      providers: [provideExperimentalZonelessChangeDetection()]
     }).compileComponents();
 
     const fixture = TestBed.createComponent(testBedComponent);
@@ -28,24 +28,22 @@ describe(TriggerFloatingBoxForDirective.name, () => {
     return fixture;
   }
 
-  it('Should not render the template without clicking the trigger first', async () => {
+  it('Should not render the floating box without clicking the trigger first', async () => {
     @Component({
       changeDetection: ChangeDetectionStrategy.OnPush,
-      imports: [TriggerFloatingBoxForDirective],
+      imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],
       selector: 'lc-test',
       template: `
         <button
           id="click-me"
-          [lcTriggerFloatingBoxFor]="template"
+          [lcTriggerFloatingBoxFor]="floatingBox"
           type="button">
           Click me
         </button>
 
-        <ng-template
-          #template
-          let-name>
+        <lc-anchored-floating-box #floatingBox>
           <span>Hello World</span>
-        </ng-template>
+        </lc-anchored-floating-box>
       `
     })
     class TestBedComponent {}
@@ -55,22 +53,22 @@ describe(TriggerFloatingBoxForDirective.name, () => {
     assertThat(classSelectorPrefix).doesNotExist();
   });
 
-  it('Should render the template when the trigger is clicked', async () => {
+  it('Should render the floating box when the trigger is clicked', async () => {
     @Component({
       changeDetection: ChangeDetectionStrategy.OnPush,
-      imports: [TriggerFloatingBoxForDirective],
+      imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],
       selector: 'lc-test',
       template: `
         <button
           id="click-me"
-          [lcTriggerFloatingBoxFor]="template"
+          [lcTriggerFloatingBoxFor]="floatingBox"
           type="button">
           Click me
         </button>
 
-        <ng-template #template>
+        <lc-anchored-floating-box #floatingBox>
           <span>Hello World</span>
-        </ng-template>
+        </lc-anchored-floating-box>
       `
     })
     class TestBedComponent {}
@@ -86,20 +84,21 @@ describe(TriggerFloatingBoxForDirective.name, () => {
   it('Can set theme', async () => {
     @Component({
       changeDetection: ChangeDetectionStrategy.OnPush,
-      imports: [TriggerFloatingBoxForDirective],
+      imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],
       selector: 'lc-test',
       template: `
         <button
           id="click-me"
-          [lcTriggerFloatingBoxFor]="template"
-          lcFloatingBoxTheme="dark"
+          [lcTriggerFloatingBoxFor]="floatingBox"
           type="button">
           Click me
         </button>
 
-        <ng-template #template>
+        <lc-anchored-floating-box
+          #floatingBox
+          theme="dark">
           <span>Hello World</span>
-        </ng-template>
+        </lc-anchored-floating-box>
       `
     })
     class TestBedComponent {}
@@ -109,60 +108,28 @@ describe(TriggerFloatingBoxForDirective.name, () => {
 
     fixture.detectChanges();
 
-    assertThat(`${classSelectorPrefix}.dark`).exists();
-    assertThat(`${classSelectorPrefix}.light`).doesNotExist();
-  });
-
-  it('Can set context', async () => {
-    @Component({
-      changeDetection: ChangeDetectionStrategy.OnPush,
-      imports: [TriggerFloatingBoxForDirective],
-      selector: 'lc-test',
-      template: `
-        <button
-          id="click-me"
-          [lcTriggerFloatingBoxFor]="template"
-          [lcFloatingBoxContext]="{ $implicit: 'There!' }"
-          type="button">
-          Click me
-        </button>
-
-        <ng-template
-          #template
-          let-name>
-          <span>Hello {{ name }}</span>
-        </ng-template>
-      `
-    })
-    class TestBedComponent {}
-    const fixture = await render(TestBedComponent);
-
-    fireEvent('#click-me', 'click');
-
-    fixture.detectChanges();
-
-    assertThat(`${classSelectorPrefix}__content`).hasTextContentMatching(/Hello There!/);
+    assertThat(`${classSelectorPrefix}.dark-theme`).exists();
+    assertThat(`${classSelectorPrefix}.light-theme`).doesNotExist();
   });
 
   it('Can set class name', async () => {
     @Component({
       changeDetection: ChangeDetectionStrategy.OnPush,
-      imports: [TriggerFloatingBoxForDirective],
+      imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],
       selector: 'lc-test',
       template: `
         <button
           id="click-me"
-          [lcTriggerFloatingBoxFor]="template"
-          lcFloatingBoxClassName="custom-class"
+          [lcTriggerFloatingBoxFor]="floatingBox"
           type="button">
           Click me
         </button>
 
-        <ng-template
-          #template
-          let-name>
-          <span>Hello {{ name }}</span>
-        </ng-template>
+        <lc-anchored-floating-box
+          #floatingBox
+          class="custom-class">
+          <span>Hello World</span>
+        </lc-anchored-floating-box>
       `
     })
     class TestBedComponent {}
@@ -178,20 +145,20 @@ describe(TriggerFloatingBoxForDirective.name, () => {
   it('Can export directive under "floatingBoxRef" name', async () => {
     @Component({
       changeDetection: ChangeDetectionStrategy.OnPush,
-      imports: [TriggerFloatingBoxForDirective],
+      imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],
       selector: 'lc-test',
       template: `
         <button
           id="click-me"
-          [lcTriggerFloatingBoxFor]="template"
+          [lcTriggerFloatingBoxFor]="floatingBox"
           #floatingBoxRef="floatingBoxRef"
           type="button">
           Click me
         </button>
 
-        <ng-template #template>
+        <lc-anchored-floating-box #floatingBox>
           <span>Hi there!</span>
-        </ng-template>
+        </lc-anchored-floating-box>
       `
     })
     class TestBedComponent {
@@ -210,6 +177,6 @@ describe(TriggerFloatingBoxForDirective.name, () => {
 
     fixture.detectChanges();
 
-    assertThat(`${classSelectorPrefix}-container.leave`).exists();
+    assertThat(`${classSelectorPrefix}-container.is-leaving`).exists();
   });
 });
