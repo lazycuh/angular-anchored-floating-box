@@ -1,7 +1,7 @@
 {
   "name": "@lazycuh/angular-anchored-floating-box",
   "description": "An easy, declarative way to render a floating box with arbitrary content anchored to an element.",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "author": {
     "name": "Baby Beet"
   },
