@@ -14,6 +14,7 @@ An easy, declarative way to render a floating box with arbitrary content anchore
   - [`AnchoredFloatingBox`](#anchoredfloatingbox)
     - [Inputs](#inputs-1)
     - [Outputs](#outputs)
+    - [Methods](#methods)
   - [Example:](#example)
   - [Result](#result)
 - [Real world example](#real-world-example)
@@ -71,6 +72,10 @@ These are the symbols that are available from this package
 | `closed`       | `() => void` | Called after the floating is closed.  |
 | `beforeOpened` | `() => void` | Called before the floating is opened. |
 | `opened`       | `() => void` | Called after the floating is opened.  |
+
+#### Methods
+
+- `AnchoredFloatingBox.setDefaultTheme(theme)`: Set the default theme that will be used for all future floating boxes. Use this method if you want to set the theme once instead of each time you render the floating box.
 
 ### Example:
 

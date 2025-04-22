@@ -179,4 +179,35 @@ describe(TriggerFloatingBoxForDirective.name, () => {
 
     assertThat(`${classSelectorPrefix}-container.is-leaving`).exists();
   });
+
+  it('Can set default theme', async () => {
+    AnchoredFloatingBox.setDefaultTheme('dark');
+
+    @Component({
+      changeDetection: ChangeDetectionStrategy.OnPush,
+      imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],
+      selector: 'lc-test',
+      template: `
+        <button
+          id="click-me"
+          [lcTriggerFloatingBoxFor]="floatingBox"
+          type="button">
+          Click me
+        </button>
+
+        <lc-anchored-floating-box #floatingBox>
+          <span>Hello World</span>
+        </lc-anchored-floating-box>
+      `
+    })
+    class TestBedComponent {}
+    const fixture = await render(TestBedComponent);
+
+    fireEvent('#click-me', 'click');
+
+    fixture.detectChanges();
+
+    assertThat(`${classSelectorPrefix}.dark-theme`).exists();
+    assertThat(`${classSelectorPrefix}.light-theme`).doesNotExist();
+  });
 });

@@ -28,8 +28,10 @@ import { viewportVerticalSizeChanges } from './utils';
   templateUrl: './anchored-floating-box.component.html'
 })
 export class AnchoredFloatingBox {
+  private static _defaultTheme: Theme = 'light';
+
   readonly className = input<string>(undefined, { alias: 'class' });
-  readonly theme = input<Theme>('light');
+  readonly theme = input<Theme>(AnchoredFloatingBox._defaultTheme);
 
   readonly closed = output();
   readonly beforeOpened = output();
@@ -89,6 +91,10 @@ export class AnchoredFloatingBox {
           });
       }
     });
+  }
+
+  static setDefaultTheme(theme: Theme) {
+    this._defaultTheme = theme;
   }
 
   protected _onPreventClickEventFromBubbling(event: Event) {
