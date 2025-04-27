@@ -11,7 +11,7 @@ import { assertThat, delayBy, fireEvent } from '@lazycuh/angular-testing-kit';
 import { AnchoredFloatingBox } from './anchored-floating-box.component';
 import { TriggerFloatingBoxForDirective } from './trigger-floating-box-for.directive';
 
-describe(TriggerFloatingBoxForDirective.name, () => {
+describe('<lc-anchored-floating-box />', () => {
   const classSelectorPrefix = '.lc-anchored-floating-box';
 
   async function render<T>(testBedComponent: Type<T>) {
@@ -28,7 +28,7 @@ describe(TriggerFloatingBoxForDirective.name, () => {
     return fixture;
   }
 
-  it('Should not render the floating box without clicking the trigger first', async () => {
+  fit('Should not render the floating box without clicking the trigger first', async () => {
     @Component({
       changeDetection: ChangeDetectionStrategy.OnPush,
       imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],
@@ -53,7 +53,7 @@ describe(TriggerFloatingBoxForDirective.name, () => {
     assertThat(classSelectorPrefix).doesNotExist();
   });
 
-  it('Should render the floating box when the trigger is clicked', async () => {
+  fit('Should render the floating box when the trigger is clicked', async () => {
     @Component({
       changeDetection: ChangeDetectionStrategy.OnPush,
       imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],
@@ -79,6 +79,14 @@ describe(TriggerFloatingBoxForDirective.name, () => {
     fixture.detectChanges();
 
     assertThat(`${classSelectorPrefix}__content`).hasTextContentMatching(/Hello World/);
+
+    fireEvent(`${classSelectorPrefix}__backdrop`, 'click');
+
+    await delayBy(1000);
+
+    assertThat(`${classSelectorPrefix}-container.is-leaving`).exists();
+    fireEvent(classSelectorPrefix, 'animationend');
+    await delayBy(1000);
   });
 
   it('Can set theme', async () => {
@@ -142,7 +150,7 @@ describe(TriggerFloatingBoxForDirective.name, () => {
     assertThat('.custom-class').exists();
   });
 
-  it('Can export directive under "floatingBoxRef" name', async () => {
+  fit('Can export directive under "floatingBoxRef" name', async () => {
     @Component({
       changeDetection: ChangeDetectionStrategy.OnPush,
       imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],

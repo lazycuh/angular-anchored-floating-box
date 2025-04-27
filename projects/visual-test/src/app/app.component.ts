@@ -11,6 +11,10 @@ import { TriggerFloatingBoxForDirective } from 'projects/angular-anchored-floati
   templateUrl: './app.component.html'
 })
 export class AppComponent {
+  onBeforeOpened() {
+    console.log('beforeOpened');
+  }
+
   onOpened() {
     console.log('opened');
   }

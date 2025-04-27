@@ -1,0 +1,19 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<div
+    class="lc-anchored-floating-box-container"
+    [class]="className()"
+    (click)="_onPreventClickEventFromBubbling($event)">
+    <div
+        class="lc-anchored-floating-box__backdrop"
+        (click)="_onBackdropClick()"></div>
+    <div
+        class="lc-anchored-floating-box bottom-anchored"
+        [class]="theme() + '-theme'"
+        (animationend)="_onAnimationDone()">
+        <div class="lc-anchored-floating-box__arrow"></div>
+        <div class="lc-anchored-floating-box__content">
+            <ng-content />
+        </div>
+    </div>
+</div>

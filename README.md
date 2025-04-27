@@ -67,11 +67,11 @@ These are the symbols that are available from this package
 
 #### Outputs
 
-| Name           | Type         | Description                           |
-| -------------- | ------------ | ------------------------------------- |
-| `closed`       | `() => void` | Called after the floating is closed.  |
-| `beforeOpened` | `() => void` | Called before the floating is opened. |
-| `opened`       | `() => void` | Called after the floating is opened.  |
+| Name           | Type         | Description                               |
+| -------------- | ------------ | ----------------------------------------- |
+| `closed`       | `() => void` | Called after the floating box is closed.  |
+| `beforeOpened` | `() => void` | Called before the floating box is opened. |
+| `opened`       | `() => void` | Called after the floating box is opened.  |
 
 #### Methods
 

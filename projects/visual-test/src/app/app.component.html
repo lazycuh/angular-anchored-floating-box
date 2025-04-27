@@ -10,8 +10,13 @@
     #floatingBox
     class="hello-world"
     theme="dark"
-    (beforeOpened)="onOpened()"
+    (beforeOpened)="onBeforeOpened()"
     (closed)="onClosed()"
     (opened)="onOpened()">
-    Hello World
+    Hello World &nbsp; &nbsp;
+    <button
+        type="button"
+        (click)="floatingBox.close()">
+        close
+    </button>
 </lc-anchored-floating-box>
