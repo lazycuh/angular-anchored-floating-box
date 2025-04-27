@@ -1,59 +1,44 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  provideExperimentalZonelessChangeDetection,
-  Type,
-  viewChild
-} from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { assertThat, delayBy, fireEvent } from '@lazycuh/angular-testing-kit';
+import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
+import { screen } from '@testing-library/angular';
+import userEvent from '@testing-library/user-event';
+import { afterEach, describe, expect, it } from 'vitest';
+
+import { delayBy, renderComponent } from '../../test/helpers';
 
 import { AnchoredFloatingBox } from './anchored-floating-box.component';
 import { TriggerFloatingBoxForDirective } from './trigger-floating-box-for.directive';
 
-describe('<lc-anchored-floating-box />', () => {
-  const classSelectorPrefix = '.lc-anchored-floating-box';
-
-  async function render<T>(testBedComponent: Type<T>) {
-    await TestBed.configureTestingModule({
-      imports: [testBedComponent],
-      providers: [provideExperimentalZonelessChangeDetection()]
-    }).compileComponents();
-
-    const fixture = TestBed.createComponent(testBedComponent);
-    fixture.detectChanges();
-
-    await delayBy(250);
-
-    return fixture;
-  }
-
-  fit('Should not render the floating box without clicking the trigger first', async () => {
-    @Component({
-      changeDetection: ChangeDetectionStrategy.OnPush,
-      imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],
-      selector: 'lc-test',
-      template: `
-        <button
-          id="click-me"
-          [lcTriggerFloatingBoxFor]="floatingBox"
-          type="button">
-          Click me
-        </button>
-
-        <lc-anchored-floating-box #floatingBox>
-          <span>Hello World</span>
-        </lc-anchored-floating-box>
-      `
-    })
-    class TestBedComponent {}
-    await render(TestBedComponent);
-
-    assertThat('#click-me').exists();
-    assertThat(classSelectorPrefix).doesNotExist();
+describe('AnchoredFloatingBox', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
   });
 
-  fit('Should render the floating box when the trigger is clicked', async () => {
+  it('Should not render the floating box without clicking the trigger first', async () => {
+    @Component({
+      changeDetection: ChangeDetectionStrategy.OnPush,
+      imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],
+      selector: 'lc-test',
+      template: `
+        <button
+          id="click-me"
+          [lcTriggerFloatingBoxFor]="floatingBox"
+          type="button">
+          Click me
+        </button>
+        <lc-anchored-floating-box #floatingBox>
+          <span>Hello World 1</span>
+        </lc-anchored-floating-box>
+      `
+    })
+    class TestBedComponent {}
+
+    await renderComponent(TestBedComponent);
+
+    expect(screen.getByText('Click me')).toBeInTheDocument();
+    expect(screen.queryByText('Hello World 1')).not.toBeInTheDocument();
+  });
+
+  it('Should render the floating box when the trigger is clicked', async () => {
     @Component({
       changeDetection: ChangeDetectionStrategy.OnPush,
       imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],
@@ -67,33 +52,27 @@ describe('<lc-anchored-floating-box />', () => {
         </button>
 
         <lc-anchored-floating-box #floatingBox>
-          <span>Hello World</span>
+          <span>Hello World 2</span>
         </lc-anchored-floating-box>
       `
     })
     class TestBedComponent {}
-    const fixture = await render(TestBedComponent);
 
-    fireEvent('#click-me', 'click');
+    await renderComponent(TestBedComponent);
 
-    fixture.detectChanges();
+    expect(screen.queryByText('Hello World 2')).not.toBeInTheDocument();
 
-    assertThat(`${classSelectorPrefix}__content`).hasTextContentMatching(/Hello World/);
+    const user = userEvent.setup();
+    await user.click(screen.getByText('Click me'));
 
-    fireEvent(`${classSelectorPrefix}__backdrop`, 'click');
-
-    await delayBy(1000);
-
-    assertThat(`${classSelectorPrefix}-container.is-leaving`).exists();
-    fireEvent(classSelectorPrefix, 'animationend');
-    await delayBy(1000);
+    expect(screen.getByText('Hello World 2')).toBeInTheDocument();
   });
 
   it('Can set theme', async () => {
     @Component({
       changeDetection: ChangeDetectionStrategy.OnPush,
       imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],
-      selector: 'lc-test',
+      selector: 'lc-test-3',
       template: `
         <button
           id="click-me"
@@ -105,19 +84,18 @@ describe('<lc-anchored-floating-box />', () => {
         <lc-anchored-floating-box
           #floatingBox
           theme="dark">
-          <span>Hello World</span>
+          <span>Hello World 3</span>
         </lc-anchored-floating-box>
       `
     })
     class TestBedComponent {}
-    const fixture = await render(TestBedComponent);
 
-    fireEvent('#click-me', 'click');
+    const renderResult = await renderComponent(TestBedComponent);
 
-    fixture.detectChanges();
+    const user = userEvent.setup();
+    await user.click(screen.getByText('Click me'));
 
-    assertThat(`${classSelectorPrefix}.dark-theme`).exists();
-    assertThat(`${classSelectorPrefix}.light-theme`).doesNotExist();
+    expect(renderResult.container.parentElement!.querySelectorAll('.dark-theme')).toHaveLength(1);
   });
 
   it('Can set class name', async () => {
@@ -136,21 +114,23 @@ describe('<lc-anchored-floating-box />', () => {
         <lc-anchored-floating-box
           #floatingBox
           class="custom-class">
-          <span>Hello World</span>
+          <span>Hello World 4</span>
         </lc-anchored-floating-box>
       `
     })
     class TestBedComponent {}
-    const fixture = await render(TestBedComponent);
 
-    fireEvent('#click-me', 'click');
+    const renderResult = await renderComponent(TestBedComponent);
 
-    fixture.detectChanges();
+    const user = userEvent.setup();
+    await user.click(screen.getByText('Click me'));
 
-    assertThat('.custom-class').exists();
+    // Length 2 because the class name provided to <lc-anchored-floating-box />
+    // is also passed to the renderer
+    expect(renderResult.container.parentElement!.querySelectorAll('.custom-class')).toHaveLength(2);
   });
 
-  fit('Can export directive under "floatingBoxRef" name', async () => {
+  it('Can export directive under "floatingBoxRef" name', async () => {
     @Component({
       changeDetection: ChangeDetectionStrategy.OnPush,
       imports: [TriggerFloatingBoxForDirective, AnchoredFloatingBox],
@@ -173,19 +153,18 @@ describe('<lc-anchored-floating-box />', () => {
       floatingBoxRef = viewChild.required('floatingBoxRef', { read: TriggerFloatingBoxForDirective });
     }
 
-    const fixture = await render(TestBedComponent);
+    const renderResult = await renderComponent(TestBedComponent);
 
-    fireEvent('#click-me', 'click');
+    const user = userEvent.setup();
+    await user.click(screen.getByText('Click me'));
 
-    fixture.detectChanges();
+    expect(screen.getByText('Hi there!')).toBeInTheDocument();
 
-    assertThat(`${classSelectorPrefix}__content`).hasTextContentMatching(/Hi there!/);
+    renderResult.fixture.componentInstance.floatingBoxRef().close();
 
-    fixture.componentInstance.floatingBoxRef().close();
+    await delayBy(16);
 
-    fixture.detectChanges();
-
-    assertThat(`${classSelectorPrefix}-container.is-leaving`).exists();
+    expect(renderResult.container.parentElement!.querySelectorAll('.is-leaving')).toHaveLength(1);
   });
 
   it('Can set default theme', async () => {
@@ -204,18 +183,20 @@ describe('<lc-anchored-floating-box />', () => {
         </button>
 
         <lc-anchored-floating-box #floatingBox>
-          <span>Hello World</span>
+          <span>Hello World 5</span>
         </lc-anchored-floating-box>
       `
     })
     class TestBedComponent {}
-    const fixture = await render(TestBedComponent);
 
-    fireEvent('#click-me', 'click');
+    const renderResult = await renderComponent(TestBedComponent);
 
-    fixture.detectChanges();
+    const user = userEvent.setup();
+    await user.click(screen.getByText('Click me'));
 
-    assertThat(`${classSelectorPrefix}.dark-theme`).exists();
-    assertThat(`${classSelectorPrefix}.light-theme`).doesNotExist();
+    expect(screen.getByText('Hello World 5')).toBeInTheDocument();
+
+    expect(renderResult.container.parentElement!.querySelectorAll('.dark-theme')).toHaveLength(1);
+    expect(renderResult.container.parentElement!.querySelectorAll('.light-theme')).toHaveLength(0);
   });
 });

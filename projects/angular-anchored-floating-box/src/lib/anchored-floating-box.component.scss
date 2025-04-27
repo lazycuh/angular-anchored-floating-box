@@ -1,5 +1,9 @@
 $easing-function: cubic-bezier(0.04, 0.54, 0.25, 1);
 
+lc-anchored-floating-box {
+    display: none !important;
+}
+
 .lc-anchored-floating-box-container,
 .lc-anchored-floating-box__backdrop {
     position: fixed;

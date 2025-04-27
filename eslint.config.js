@@ -8,7 +8,7 @@ import baseConfig from '@lazycuh/eslint-config-base';
  */
 export default tsEslint.config(
   {
-    files: ['**/src/**/*.ts'],
+    files: ['**/*.ts'],
     extends: [...baseConfig, ...angular.configs.tsRecommended],
     processor: angular.processInlineTemplates,
     rules: {
