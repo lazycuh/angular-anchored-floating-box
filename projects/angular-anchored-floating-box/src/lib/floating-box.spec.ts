@@ -21,8 +21,8 @@ describe('AnchoredFloatingBox', () => {
       template: `
         <button
           id="click-me"
-          [lcTriggerFloatingBoxFor]="floatingBox"
-          type="button">
+          type="button"
+          [lcTriggerFloatingBoxFor]="floatingBox">
           Click me
         </button>
         <lc-anchored-floating-box #floatingBox>
@@ -46,8 +46,8 @@ describe('AnchoredFloatingBox', () => {
       template: `
         <button
           id="click-me"
-          [lcTriggerFloatingBoxFor]="floatingBox"
-          type="button">
+          type="button"
+          [lcTriggerFloatingBoxFor]="floatingBox">
           Click me
         </button>
 
@@ -76,8 +76,8 @@ describe('AnchoredFloatingBox', () => {
       template: `
         <button
           id="click-me"
-          [lcTriggerFloatingBoxFor]="floatingBox"
-          type="button">
+          type="button"
+          [lcTriggerFloatingBoxFor]="floatingBox">
           Click me
         </button>
 
@@ -106,8 +106,8 @@ describe('AnchoredFloatingBox', () => {
       template: `
         <button
           id="click-me"
-          [lcTriggerFloatingBoxFor]="floatingBox"
-          type="button">
+          type="button"
+          [lcTriggerFloatingBoxFor]="floatingBox">
           Click me
         </button>
 
@@ -137,10 +137,10 @@ describe('AnchoredFloatingBox', () => {
       selector: 'lc-test',
       template: `
         <button
-          id="click-me"
-          [lcTriggerFloatingBoxFor]="floatingBox"
           #floatingBoxRef="floatingBoxRef"
-          type="button">
+          id="click-me"
+          type="button"
+          [lcTriggerFloatingBoxFor]="floatingBox">
           Click me
         </button>
 
@@ -177,8 +177,8 @@ describe('AnchoredFloatingBox', () => {
       template: `
         <button
           id="click-me"
-          [lcTriggerFloatingBoxFor]="floatingBox"
-          type="button">
+          type="button"
+          [lcTriggerFloatingBoxFor]="floatingBox">
           Click me
         </button>
 

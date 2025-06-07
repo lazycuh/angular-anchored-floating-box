@@ -1,4 +1,3 @@
-/* eslint-disable @angular-eslint/component-class-suffix */
 import {
   ApplicationRef,
   ChangeDetectionStrategy,

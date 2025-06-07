@@ -1,4 +1,3 @@
-/* eslint-disable @angular-eslint/component-class-suffix */
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -6,7 +5,6 @@ import {
   DestroyRef,
   effect,
   ElementRef,
-  Host,
   HostListener,
   inject,
   input,
@@ -52,8 +50,9 @@ export class AnchoredFloatingBoxRenderer {
    */
   private _isEntering = false;
 
-  constructor(@Host() host: ElementRef<HTMLElement>) {
+  constructor() {
     const destroyRef = inject(DestroyRef);
+    const host = inject<ElementRef<HTMLElement>>(ElementRef, { host: true });
 
     effect(() => {
       if (!this.isOpened()) {

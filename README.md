@@ -25,6 +25,7 @@ An easy, declarative way to render a floating box with arbitrary content anchore
 
 | This library | Angular |
 | ------------ | ------- |
+| 4.x.x        | 20.x.x  |
 | 3.x.x        | 19.x.x  |
 | 2.x.x        | 19.x.x  |
 | 1.x.x        | 16 - 18 |

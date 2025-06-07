@@ -29,8 +29,9 @@ export default tsEslint.config(
         }
       ],
       '@angular-eslint/no-host-metadata-property': 'off',
+      '@angular-eslint/no-input-rename': 'off',
       '@angular-eslint/prefer-on-push-component-change-detection': 'error',
-      'import/no-unresolved': 'off'
+      'import/no-unresolved': 'off',
     }
   },
   {
